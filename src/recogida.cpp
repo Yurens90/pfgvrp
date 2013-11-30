@@ -288,23 +288,28 @@ bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
          precogida ret;
          int demanda = 0;
          while (!fin_visitas()) {
-                 unsigned int i = 0;
-                 while (i < vecs.size() )
-         ret = candidatos(siguiente); //siguiente es el punto en funcion del cual, se va a buscar el siguiente. Ret es realmente el siguiente punto
-             i++;
+            unsigned int i = 0;
+            while (i < vecs.size() ) {
+               ret = candidatos(vecs[i].getid());//ret = candidatos(siguiente); //siguiente es el punto en funcion del cual, se va a buscar el siguiente. Ret es realmente el siguiente punto
+
+               i++;
+
+            }
          }
+         /*
          while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
-                 ret = candidatos(siguiente);
-                 //cout << "----------->siguiente: " << ret.getid() << endl;
-                 demanda = ret.getdemanda();
-                 //cout << "Demanda: " << demanda << endl;
-                 //cin.get();
-                 cont++;
-                 v.sumar_coste(ret.getdistancia());
-                 siguiente = ret.getid();
-                 v.insertar(siguiente);
-                 v.sumar_carga(demanda);
+			 ret = candidatos(siguiente);
+			 //cout << "----------->siguiente: " << ret.getid() << endl;
+			 demanda = ret.getdemanda();
+			 //cout << "Demanda: " << demanda << endl;
+			 //cin.get();
+			 cont++;
+			 v.sumar_coste(ret.getdistancia());
+			 siguiente = ret.getid();
+			 v.insertar(siguiente);
+			 v.sumar_carga(demanda);
          }
+         */
          v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
          v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
          //v.impr_recorrido();
