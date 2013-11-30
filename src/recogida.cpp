@@ -278,7 +278,7 @@ precogida ruta :: candidatos (int i) { // dado un punto buscamos los 3 mas cerca
    insertar_visitado(candidatos[indice].getid());
    return candidatos[indice];
 };
-
+/*
 bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
    //cout << "fin de visitas? " << fin_visitas() << endl;
    if (!fin_visitas()) {
@@ -287,6 +287,46 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   //float coste = 0.0;
 	   precogida ret;
 	   int demanda = 0;
+	   while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
+		  ret = candidatos(siguiente);
+		  //cout << "----------->siguiente: " << ret.getid() << endl;
+		  demanda = ret.getdemanda();
+		  //cout << "Demanda: " << demanda << endl;
+		  //cin.get();
+		  cont++;
+		  v.sumar_coste(ret.getdistancia());
+		  siguiente = ret.getid();
+		  v.insertar(siguiente);
+		  v.sumar_carga(demanda);
+	   }
+	   v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
+	   v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
+	   //v.impr_recorrido();
+	   //cin.get();
+	   //cout << "distancia del ultimo punto al origen: " << getdistanciaij(ret.getid(),0) << endl
+	   //cout << "ultimo punto visitado: " << ret.getid() << endl;
+	   //cout << "cuenta: " << cont << endl;
+	   //cout << "coste total del vehiculo: " << v.get_coste() << endl;
+	   return true;
+   }
+   //cout << "Ya todos los puntos estan visitados" << endl;
+   return false;
+};
+*/
+bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
+   //cout << "fin de visitas? " << fin_visitas() << endl;
+   if (!fin_visitas()) {
+	   int cont = 0;
+	   int siguiente = 0;
+	   //float coste = 0.0;
+	   precogida ret;
+	   int demanda = 0;
+	   while (!fin_visitas()) {
+		  unsigned int i = 0;
+		  while (i < vecs.size() )
+	         ret = candidatos(siguiente); //siguiente es el punto en funcion del cual, se va a buscar el siguiente. Ret es realmente el siguiente punto
+             i++;
+	   }
 	   while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  //cout << "----------->siguiente: " << ret.getid() << endl;
@@ -355,10 +395,10 @@ resolver :: resolver (mdistancia mat) { //corregir
 };
 
 resolver :: resolver (const resolver &r) {
-/*   vehiculos= r.vehiculos;
+   vehiculos= r.vehiculos;
    rt = r.rt;
    coste_total = r.coste_total;
- */
+
 };
 
 resolver :: ~resolver() {
