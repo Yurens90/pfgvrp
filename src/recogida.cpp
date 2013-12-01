@@ -297,33 +297,39 @@ bool ruta :: buscar (vector <tvehiculo> &vecs) { //ruta parcial //siguiente es e
          unsigned int i = 0;
          int cont = 0;
          while (!fin_visitas() && cont <= vecs.size()) {
-            cout << "vecs size: " << vecs.size() << endl;
+            //cout << "vecs size: " << vecs.size() << endl;
             while (i < vecs.size() && !fin_visitas() && cont <= vecs.size() ) {
-                cout << "i: " << i << endl;
+                //cout << "i: " << i << endl;
                 //cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", siguiente punto: " << ret.getid() << endl;
                 //cin.get();
                 ret = candidatos(vecs[i].get_ultimo());
                 demanda = ret.getdemanda();
-                cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", punto candidato: " << ret.getid() << ", demanda del punto: " << demanda <<  endl;
+                //cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", punto candidato: " << ret.getid() << ", demanda del punto: " << demanda <<  endl;
             	if (vecs[i].getcarga_actual()+demanda <= vecs[i].getcarga_max()) { //si la carga actual del vehiculo sumada a la que vamos a introducir es menor, lo visita
-                   cout << "entra if" << endl;
+                   //cout << "entra if" << endl;
             	  insertar_visitado(ret.getid()); //lo marcamos como visitado para descartarlo de la seleccion de puntos factibles
-            	  cout << "distancia: " << ret.getdistancia() << endl;
-            	  cout << "d: " << getdistanciaij(vecs[i].get_ultimo(), ret.getid());
+            	  //cout << "distancia: " << ret.getdistancia() << endl;
+            	  //cout << "d: " << getdistanciaij(vecs[i].get_ultimo(), ret.getid());
                   vecs[i].sumar_coste(ret.getdistancia());
                   vecs[i].sumar_carga(demanda);
                   vecs[i].insertar(ret.getid());
             	}
-            	else { //el vehiculo esta lleno y debemos sumarle el coste de volver al origen y añadir el punto visitado (0)
-            		cout << "vehiculo lleno" << endl;
-            	   vecs[i].sumar_coste(getdistanciaij(vecs[i].get_ultimo(),0));
-                   vecs[i].insertar(0);
-                   cont++;
-            	}
+            	//else {
+            		//cout << "vehiculo lleno" << endl;
+            	   //vecs[i].sumar_coste(getdistanciaij(vecs[i].get_ultimo(),0));
+                   //vecs[i].insertar(0);
+                   //cont++; //sirve para contar el numero de vehiculos llenos y parar la ejecucion en caso de que no haya solucion
+            	//}
                 i++;
 
             }
             i = 0;
+         }
+         for (int i = 0; i < vecs.size(); i++) {
+            if (vecs[i].enuso()) {
+         	   vecs[i].sumar_coste(getdistanciaij(vecs[i].get_ultimo(),0));
+               vecs[i].insertar(0);
+            }
          }
          /*
          while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
@@ -406,24 +412,11 @@ resolver :: ~resolver() {
 };
 
 bool resolver :: ejecutar() {
-   //bool existe = true ;
-   //unsigned int i = 0;
-//   while ((i < vehiculos.size()) && (existe)){
-      //existe = rt->buscar(vehiculos[i],cmed);
-   cout << "entro" << endl;
    bool resuelto;
    resuelto = rt->buscar(vehiculos);
-   cout << "salio" << endl;
    for (unsigned int i = 0; i < vehiculos.size(); i++)
        coste_total+=vehiculos[i].get_coste();
    return resuelto;
-     // cout << "Iteracion : " << i << endl;
- //     i++;
- //  }
-   //if (i == vehiculos.size())
-      //cout << "Ha sido necesario usar todos los vehiculos" << endl;
-   //if (!existe)
-      //cout << "Se han visitado todos los puntos sin usar el total de vehiculos" << endl;
 };
 
 float resolver :: get_coste_total() {
@@ -522,10 +515,11 @@ void optimo :: repetir (int n, char delimitador, string salida) {
 			 nvehiculos = sol->get_vehiculosusados();
 		  }
 		  ss << i << delimitador << tiempo << delimitador << sol->get_ruta_total() << delimitador << sol->get_coste_total() << delimitador << sol->get_vehiculosusados() << endl;
-		  delete sol;
+
 	  }
 	  else
 	    ss << "No se encontro solucion" << endl;
+	  delete sol;
 	  //cout << "Iteracion: " << i << endl;
    };
    gettimeofday(&endTimetot,NULL);
