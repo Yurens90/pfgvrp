@@ -56,6 +56,7 @@ public:
    float get_coste ();
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
+   int get_ultimo();
 };
 
 class mdistancia {
@@ -91,7 +92,7 @@ public:
    ruta(string nombre);
    vector<precogida> ordenar_fila (int i);
    precogida candidatos (int i);
-   bool buscar (tvehiculo &v, int media);
+   bool buscar (vector <tvehiculo> &vecs);
    void insertar_visitado (int i);
    bool comprobar_visitado (int i);
    bool fin_visitas ();
@@ -110,7 +111,7 @@ public:
    resolver(mdistancia mat);
    resolver (const resolver &r);
    ~resolver();
-   void ejecutar ();
+   bool ejecutar ();
    float get_coste_total ();
    string get_ruta();
    string get_ruta_total();
