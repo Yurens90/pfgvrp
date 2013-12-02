@@ -144,6 +144,12 @@ int tvehiculo :: get_ultimo() {
    return (*(visitados.rbegin()));
 };
 
+bool tvehiculo :: lleno() {
+   if (getcarga_actual() == getcarga_max())
+      return true;
+   return false;
+};
+
 mdistancia :: mdistancia () {
    N = 0;
    ucarga = 0;
@@ -295,17 +301,22 @@ bool ruta :: buscar (vector <tvehiculo> &vecs) { //ruta parcial //siguiente es e
          precogida ret;
          int demanda = 0;
          unsigned int i = 0;
-         int cont = 0;
-         while (!fin_visitas() && cont <= vecs.size()) {
+         unsigned int cont = 0;
+         while (!fin_visitas() && cont < vecs.size() * 2) {
             //cout << "vecs size: " << vecs.size() << endl;
-            while (i < vecs.size() && !fin_visitas() && cont <= vecs.size() ) {
+            while (i < vecs.size() && !fin_visitas()) {
                 //cout << "i: " << i << endl;
                 //cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", siguiente punto: " << ret.getid() << endl;
                 //cin.get();
                 ret = candidatos(vecs[i].get_ultimo());
+                cout << "candidato: " << ret.getid() << endl;
+                cout << "demanda del punto: " << ret.getdemanda() << endl;
+                cout << "Carga actual del vehículo: " << vecs[i].getcarga_actual() << ", carga maxima del vehiculo: " << vecs[i].getcarga_max() << endl;
+                //cin.get();
+
                 demanda = ret.getdemanda();
                 //cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", punto candidato: " << ret.getid() << ", demanda del punto: " << demanda <<  endl;
-            	if (vecs[i].getcarga_actual()+demanda <= vecs[i].getcarga_max()) { //si la carga actual del vehiculo sumada a la que vamos a introducir es menor, lo visita
+            	if (vecs[i].getcarga_actual()+demanda <= vecs[i].getcarga_max()) { //si la carga actual del vehiculo sumada a la que vamos a introducir es menor o igual, lo visita
                    //cout << "entra if" << endl;
             	  insertar_visitado(ret.getid()); //lo marcamos como visitado para descartarlo de la seleccion de puntos factibles
             	  //cout << "distancia: " << ret.getdistancia() << endl;
@@ -313,46 +324,23 @@ bool ruta :: buscar (vector <tvehiculo> &vecs) { //ruta parcial //siguiente es e
                   vecs[i].sumar_coste(ret.getdistancia());
                   vecs[i].sumar_carga(demanda);
                   vecs[i].insertar(ret.getid());
+                  cont = 0;
             	}
-            	//else {
-            		//cout << "vehiculo lleno" << endl;
-            	   //vecs[i].sumar_coste(getdistanciaij(vecs[i].get_ultimo(),0));
-                   //vecs[i].insertar(0);
-                   //cont++; //sirve para contar el numero de vehiculos llenos y parar la ejecucion en caso de que no haya solucion
-            	//}
+            	else {
+            		cont++;
+            		//cout << "cont: " << cont << endl;
+            	}
                 i++;
 
             }
             i = 0;
          }
-         for (int i = 0; i < vecs.size(); i++) {
+         for (unsigned int i = 0; i < vecs.size(); i++) {
             if (vecs[i].enuso()) {
          	   vecs[i].sumar_coste(getdistanciaij(vecs[i].get_ultimo(),0));
                vecs[i].insertar(0);
             }
          }
-         /*
-         while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
-			 ret = candidatos(siguiente);
-			 //cout << "----------->siguiente: " << ret.getid() << endl;
-			 demanda = ret.getdemanda();
-			 //cout << "Demanda: " << demanda << endl;
-			 //cin.get();
-			 cont++;
-			 v.sumar_coste(ret.getdistancia());
-			 siguiente = ret.getid();
-			 v.insertar(siguiente);
-			 v.sumar_carga(demanda);
-         }
-         */
-         //v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
-         //v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
-         //v.impr_recorrido();
-         //cin.get();
-         //cout << "distancia del ultimo punto al origen: " << getdistanciaij(ret.getid(),0) << endl
-         //cout << "ultimo punto visitado: " << ret.getid() << endl;
-         //cout << "cuenta: " << cont << endl;
-         //cout << "coste total del vehiculo: " << v.get_coste() << endl;
    if (fin_visitas())
       return true;
    return false;
@@ -403,6 +391,7 @@ resolver :: resolver (const resolver &r) {
    vehiculos= r.vehiculos;
    rt = r.rt;
    coste_total = r.coste_total;
+   cmed = 0;
 
 };
 
@@ -494,7 +483,7 @@ void optimo :: repetir (int n, char delimitador, string salida) {
 	  //gettimeofday(&inicio, NULL);
 	  //cout << endl << endl << endl;
 	  resolver *sol = new resolver(matr);
-	  if (sol->ejecutar()) {
+	  if (sol->ejecutar()) { // si devuelve true es porque se ha conseguido visitar todos los puntos
 
 		  //cout << "Sol->getcoste... " << sol->get_coste_total() << " VS " << menor->get_coste_total() << endl;
 		  //gettimeofday(&fin, NULL);

@@ -57,6 +57,7 @@ public:
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
    int get_ultimo();
+   bool lleno ();
 };
 
 class mdistancia {
