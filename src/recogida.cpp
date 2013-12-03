@@ -278,7 +278,7 @@ precogida ruta :: candidatos (int i) { // dado un punto buscamos los 3 mas cerca
    insertar_visitado(candidatos[indice].getid());
    return candidatos[indice];
 };
-/*
+
 bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
    //cout << "fin de visitas? " << fin_visitas() << endl;
    if (!fin_visitas()) {
@@ -312,7 +312,7 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
    //cout << "Ya todos los puntos estan visitados" << endl;
    return false;
 };
-*/
+/*
 bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
    //cout << "fin de visitas? " << fin_visitas() << endl;
    if (!fin_visitas()) {
@@ -353,7 +353,7 @@ bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
    return false;
 };
 
-
+*/
 void ruta :: insertar_visitado (int i) {
    visitados.push_back(i);
 };
