@@ -505,7 +505,7 @@ void optimo :: repetir (int n, char delimitador, string salida) {
 	  tiempo += timeval_diff(&endTime, &iniTime);
 	  if (sol->get_coste_total() < menor_coste) {
 		 //cout << "---> Se ha encontrado una mejor" << endl;
-		// menor =  sol;
+		 (*menor) =  (*sol);
 		 gettimeofday(&parcialtime, NULL);
 		 mejortiempo = timeval_diff(&parcialtime,&iniTime);
 		 mejorit = i;
@@ -519,6 +519,7 @@ void optimo :: repetir (int n, char delimitador, string salida) {
 	  //cout << "Iteracion: " << i << endl;
    };
    gettimeofday(&endTimetot,NULL);
+   cout << "Menor: " << menor->get_ruta_total() << endl;
    out << "Iteracion_mejor_solucion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << mejorit << delimitador << mejortiempo << delimitador << mejor_ruta << delimitador << menor_coste << delimitador << nvehiculos << endl;
    out << "Numero_iteracion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
