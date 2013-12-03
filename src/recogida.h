@@ -8,7 +8,6 @@
 #include <sys/time.h>
 #include <sstream>
 #include <time.h>
-
 using namespace std;
 
 #ifndef RECOGIDA_H_
@@ -35,6 +34,11 @@ public:
    void setdemanda(int dmd);
 };
 
+class visita {
+   int id; //identificador del punto
+   float coste; //coste que supone ir por dicho punto
+};
+
 class tvehiculo {
    int id; //identificador del vehiculo
    int ut; // unidades de carga total
@@ -56,6 +60,7 @@ public:
    float get_coste ();
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
+   list <int> get_visitados();
 };
 
 class mdistancia {
@@ -77,6 +82,7 @@ public:
    int getnvehiculos();
    int getcarga();
    void mostrar_demandas();
+   float get_distancia(int i, int j);
 };
 
 class ruta {
@@ -102,7 +108,7 @@ public:
 class resolver {
 private:
    vector <tvehiculo> vehiculos; //contiene una lista con los vehiculos que van a realizar las recogidas
-   ruta * rt; //se encarga de buscar las rutas para los camiones
+   ruta * rt; //se encarga de buscar las rutas para cada vehiculo
    float coste_total;
    int cmed; //carga media de los contenedores
 public:
@@ -115,6 +121,9 @@ public:
    string get_ruta();
    string get_ruta_total();
    unsigned int get_vehiculosusados();
+   vector <tvehiculo> get_vector();
+   float getdistanciaij (int i, int j);
+
 };
 
 class optimo {
@@ -125,6 +134,7 @@ private:
 public:
   optimo (mdistancia &mat);
   void repetir (int i,char delimitador, string salida);
+  void intercambiar(mdistancia &md);
 };
 
 #endif

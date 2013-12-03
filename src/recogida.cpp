@@ -137,6 +137,10 @@ bool tvehiculo :: enuso() {
    return usado;
 };
 
+list <int> tvehiculo :: get_visitados() {
+   return visitados;
+};
+
 mdistancia :: mdistancia () {
    N = 0;
    ucarga = 0;
@@ -233,6 +237,10 @@ void mdistancia :: mostrar_demandas() {
    cout << "------------------" << endl;
 };
 
+float mdistancia :: get_distancia(int i, int j) {
+   return md[i][j].getdistancia();
+};
+
 ruta :: ruta (mdistancia &mat) {
    mraw = mat;
    mord = mat;    //nn
@@ -287,6 +295,7 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   //float coste = 0.0;
 	   precogida ret;
 	   int demanda = 0;
+	  // cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
 	   while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  //cout << "----------->siguiente: " << ret.getid() << endl;
@@ -295,51 +304,17 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 		  //cin.get();
 		  cont++;
 		  v.sumar_coste(ret.getdistancia());
+		  //cout << "ret: " << ret.getdistancia() << ", " << "getij: " << mraw.get_distancia(ret.getid(), siguiente) << " i: " << siguiente << ", j: " << ret.getid() << endl;
+		  //cin.get();
 		  siguiente = ret.getid();
 		  v.insertar(siguiente);
 		  v.sumar_carga(demanda);
 	   }
+	   //cout << "vehiculo lleno" << endl;
 	   v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
-	   v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
-	   //v.impr_recorrido();
+	   //cout << "getij: " << mraw.get_distancia(ret.getid(), 0) << ", vs: " << getdistanciaij(ret.getid(),0) << " i: 0, j: "  << ret.getid() <<  endl;
+	   //cout << "carga hasta el momento: " << v.get_coste() << endl;
 	   //cin.get();
-	   //cout << "distancia del ultimo punto al origen: " << getdistanciaij(ret.getid(),0) << endl
-	   //cout << "ultimo punto visitado: " << ret.getid() << endl;
-	   //cout << "cuenta: " << cont << endl;
-	   //cout << "coste total del vehiculo: " << v.get_coste() << endl;
-	   return true;
-   }
-   //cout << "Ya todos los puntos estan visitados" << endl;
-   return false;
-};
-/*
-bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
-   //cout << "fin de visitas? " << fin_visitas() << endl;
-   if (!fin_visitas()) {
-	   int cont = 0;
-	   int siguiente = 0;
-	   //float coste = 0.0;
-	   precogida ret;
-	   int demanda = 0;
-	   while (!fin_visitas()) {
-		  unsigned int i = 0;
-		  while (i < vecs.size() )
-	         ret = candidatos(siguiente); //siguiente es el punto en funcion del cual, se va a buscar el siguiente. Ret es realmente el siguiente punto
-             i++;
-	   }
-	   while (cont < mraw.getsize() && v.getcarga_actual()+demanda <= v.getcarga_max() && !fin_visitas()) {
-		  ret = candidatos(siguiente);
-		  //cout << "----------->siguiente: " << ret.getid() << endl;
-		  demanda = ret.getdemanda();
-		  //cout << "Demanda: " << demanda << endl;
-		  //cin.get();
-		  cont++;
-		  v.sumar_coste(ret.getdistancia());
-		  siguiente = ret.getid();
-		  v.insertar(siguiente);
-		  v.sumar_carga(demanda);
-	   }
-	   v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
 	   v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
 	   //v.impr_recorrido();
 	   //cin.get();
@@ -353,7 +328,6 @@ bool ruta :: buscar (vector <tvehiculo> &vecs, int media) { //ruta parcial
    return false;
 };
 
-*/
 void ruta :: insertar_visitado (int i) {
    visitados.push_back(i);
 };
@@ -395,8 +369,10 @@ resolver :: resolver (mdistancia mat) { //corregir
 };
 
 resolver :: resolver (const resolver &r) {
+   cmed = 0;
    vehiculos= r.vehiculos;
    rt = r.rt;
+   (*rt) = (*r.rt);
    coste_total = r.coste_total;
 
 };
@@ -453,6 +429,15 @@ unsigned int resolver :: get_vehiculosusados() {
     	  cont++;
    }
    return cont;
+};
+
+float resolver ::  getdistanciaij (int i, int j) {
+   return (rt->getdistanciaij(i,j));
+};
+
+
+vector <tvehiculo> resolver :: get_vector () {
+   return vehiculos;
 };
 
 optimo :: optimo (mdistancia &mat) {
@@ -530,4 +515,34 @@ void optimo :: repetir (int n, char delimitador, string salida) {
    //cout << "Iteracion del mejor: " << mejorit << endl;
    //cout << "El mejor: " << menor->get_coste_total() << endl;
    //cout << "ruta: " << menor->get_ruta() << endl;
+};
+
+
+void optimo :: intercambiar(mdistancia &md) {
+  vector <tvehiculo> vecs = menor->get_vector();
+  cout << "chivato 1 " << endl;
+  float coste_calculado = 0.0;
+  list <int> puntos;
+  vector<int> puntos2;
+  cout << "vecs size: " << vecs.size() << endl;
+  for (unsigned int i = 0; i < vecs.size(); i++) {
+     if (vecs[i].enuso()) { //solo vamos a iterar con los vehiculos que realmente se hayan utilizado
+		 puntos = vecs[i].get_visitados();
+		 //cout << "chivato 2" << endl;
+		 cout << "enuso: " << vecs[i].enuso() << endl;
+		 for (list<int> :: iterator it = puntos.begin(); it != puntos.end(); it++)
+			puntos2.push_back((*it));
+		// cout << "chivato 3" << endl;
+		 cout << "tamano puntos 2 : " << puntos2.size() << endl;
+		 for (unsigned int j = 1; j < puntos2.size(); j++) {
+			//coste_calculado += menor->getdistanciaij(puntos2[j-1],puntos2[j]);
+			coste_calculado += md.get_distancia(puntos2[j-1],puntos2[j]);
+			//cout << "for j:" << j  << endl;
+			//cout << "j-1: " << puntos2[j-1] << ", j: " << puntos2[j] << ", coste: " << md.get_distancia(puntos2[j-1],puntos2[j]) << " vs: " << vecs[i].get_coste() << endl;
+		 }
+		 cout << "coste calculado: " << coste_calculado << endl;
+     }
+     puntos2.clear();
+  }
+  cout << "coste calculado: " << coste_calculado << ", coste algoritmo: " << menor->get_coste_total() << endl;
 };
