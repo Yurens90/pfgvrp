@@ -33,18 +33,20 @@ public:
    int getdemanda();
    void setdemanda(int dmd);
 };
-
+/*
 class visita {
    int id; //identificador del punto
    float coste; //coste que supone ir por dicho punto
 };
+*/
 
 class tvehiculo {
    int id; //identificador del vehiculo
    int ut; // unidades de carga total
    int ua; //unidades de carga actual
    float coste; //coste de la ruta
-   list <int> visitados;
+   //list <int> visitados;
+   vector <int> visitados;
    bool usado;
 public:
    tvehiculo();
@@ -57,14 +59,18 @@ public:
    int getcarga_max ();
    void sumar_carga (int cg);
    void sumar_coste (float cost);
+   void restar_carga (int cg);
+   void set_carga(int cg);
+   void set_coste(float cost);
    float get_coste ();
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
-   list <int> get_visitados();
+   vector <int> get_visitados();
+   void set_visitados(vector <int> &vt);
 };
 
 class mdistancia {
-   int N; //numero de putnos de recogida
+   int N; //numero de puntos de recogida
    vector <vector <precogida> > md;
    int nvehiculos; //numero de vehiculos que realizaran las rutas
    int ucarga; //unidades de carga maxima de dichos vehiculos
@@ -83,6 +89,7 @@ public:
    int getcarga();
    void mostrar_demandas();
    float get_distancia(int i, int j);
+   float get_demandaij(int i, int j);
 };
 
 class ruta {
@@ -122,6 +129,7 @@ public:
    string get_ruta_total();
    unsigned int get_vehiculosusados();
    vector <tvehiculo> get_vector();
+   void set_vector(vector <tvehiculo> &vc);
    float getdistanciaij (int i, int j);
 
 };
