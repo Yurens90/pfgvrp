@@ -573,76 +573,78 @@ void optimo :: intercambiar(mdistancia &md) {
    vector <tvehiculo> vecs = menor->get_vector();
    srand(time(NULL));
    //vector <vector <int> > pvisitados;
-   unsigned int i = rand()% menor->get_vehiculosusados();
-   while (i == 0) {
-	  //cout << "1" << endl;
-	  i = rand()% menor->get_vehiculosusados();
-   }
-   unsigned int j = rand()% menor->get_vehiculosusados();
-   while (j == i && vecs.size() > 1) {
-      j = rand()% menor->get_vehiculosusados();
-      //cout << "2" << endl;
-   }
-   vector <int> p1 = vecs[i].get_visitados();
-   vector <int> p2 = vecs[j].get_visitados();
-   unsigned int k = rand()% p1.size();
-   //cout << "p1 size : " << p1.size() << ", i: " << i << endl;
-   //cin.get();
-   while (k == 0) {
-	   //cout << "3" << endl;
-      k = rand()% p1.size();
-   }
-   unsigned int z = rand()% p2.size();
-   while (z == 0)
-      z = rand()% p2.size();
+   if (menor->get_vehiculosusados() > 1) {
+	   unsigned int i = rand()% menor->get_vehiculosusados();
+	   while (i == 0) {
+		  //cout << "1" << endl;
+		  i = rand()% menor->get_vehiculosusados();
+	   }
+	   unsigned int j = rand()% menor->get_vehiculosusados();
+	   while (j == i && vecs.size() > 1) {
+		  j = rand()% menor->get_vehiculosusados();
+		  //cout << "2" << endl;
+	   }
+	   vector <int> p1 = vecs[i].get_visitados();
+	   vector <int> p2 = vecs[j].get_visitados();
+	   unsigned int k = rand()% p1.size();
+	   //cout << "p1 size : " << p1.size() << ", i: " << i << endl;
+	   //cin.get();
+	   while (k == 0) {
+		   //cout << "3" << endl;
+		  k = rand()% p1.size();
+	   }
+	   unsigned int z = rand()% p2.size();
+	   while (z == 0)
+		  z = rand()% p2.size();
 
-   int aux = p1[k];
-   p1[k] = p2[z];
-   p2[z] = aux;
+	   int aux = p1[k];
+	   p1[k] = p2[z];
+	   p2[z] = aux;
 
-   float cost_total1 = 0.0;
-   int demand1 = 0.0;
-   for (unsigned int ii = 1; ii < p1.size(); ii++) {
-      cost_total1 += md.get_distancia(p1[ii-1], p1[ii]);
-      demand1 += md.get_demandaij(p1[ii-1], p1[ii]);
-   }
-   float cost_total2 = 0.0;
-   int demand2 = 0.0;
-   for (unsigned int ii = 1; ii < p2.size(); ii++) {
-      cost_total2 += md.get_distancia(p2[ii-1], p2[ii]);
-      demand2 += md.get_demandaij(p2[ii-1], p2[ii]);
-   }
-   //cout << "Antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
-   //cout << "Antigua carga1: " << vecs[i].getcarga_actual() << ", nuevo: " << demand1 << ", maxima: " << vecs[i].getcarga_max() << endl;
-   //cout << "Antiguo coste2: " << vecs[j].get_coste() << ", nuevo: " << cost_total2 << endl;
-   //cout << "Antigua carga2: " << vecs[j].getcarga_actual() << ", nuevo: " << demand2 << ", maxima: " << vecs[i].getcarga_max() << endl;
-   //cin.get();
-   //if (((cost_total1 <= vecs[i].get_coste()) || (cost_total2 <= vecs[j].get_coste())) && demand1 <= vecs[i].getcarga_max() && demand2 <= vecs[j].getcarga_max()) {
-   if (((cost_total1 <= vecs[i].get_coste()) && (cost_total2 <= vecs[j].get_coste()))) {
-      cout << "mejor solucion encontrada!" << endl;
-      cout << "Antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
-      cout << "Antigua carga1: " << vecs[i].getcarga_actual() << ", nuevo: " << demand1 << ", maxima: " << vecs[i].getcarga_max() << endl;
-      cout << "Antiguo coste2: " << vecs[j].get_coste() << ", nuevo: " << cost_total2 << endl;
-      cout << "Antigua carga2: " << vecs[j].getcarga_actual() << ", nuevo: " << demand2 << ", maxima: " << vecs[i].getcarga_max() << endl;
-      cin.get();
-      vecs[i].set_visitados(p1);
-      vecs[i].set_carga(demand1);
-      vecs[i].set_coste(cost_total1);
-      vecs[j].set_visitados(p2);
-      vecs[i].set_carga(demand2);
-      vecs[i].set_coste(cost_total2);
-      menor->set_vector(vecs);
-      cout << "coste total: " << menor->get_coste_total() << ", ruta: " << menor->get_ruta_total() << endl;
-   }
+	   float cost_total1 = 0.0;
+	   int demand1 = 0.0;
+	   for (unsigned int ii = 1; ii < p1.size(); ii++) {
+		  cost_total1 += md.get_distancia(p1[ii-1], p1[ii]);
+		  demand1 += md.get_demandaij(p1[ii-1], p1[ii]);
+	   }
+	   float cost_total2 = 0.0;
+	   int demand2 = 0.0;
+	   for (unsigned int ii = 1; ii < p2.size(); ii++) {
+		  cost_total2 += md.get_distancia(p2[ii-1], p2[ii]);
+		  demand2 += md.get_demandaij(p2[ii-1], p2[ii]);
+	   }
+	   //cout << "Antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
+	   //cout << "Antigua carga1: " << vecs[i].getcarga_actual() << ", nuevo: " << demand1 << ", maxima: " << vecs[i].getcarga_max() << endl;
+	   //cout << "Antiguo coste2: " << vecs[j].get_coste() << ", nuevo: " << cost_total2 << endl;
+	   //cout << "Antigua carga2: " << vecs[j].getcarga_actual() << ", nuevo: " << demand2 << ", maxima: " << vecs[i].getcarga_max() << endl;
+	   //cin.get();
+	   //if (((cost_total1 <= vecs[i].get_coste()) || (cost_total2 <= vecs[j].get_coste())) && demand1 <= vecs[i].getcarga_max() && demand2 <= vecs[j].getcarga_max()) {
+	   if (((cost_total1 <= vecs[i].get_coste()) && (cost_total2 <= vecs[j].get_coste()))) {
+		  cout << "mejor solucion encontrada!" << endl;
+		  cout << "Antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
+		  cout << "Antigua carga1: " << vecs[i].getcarga_actual() << ", nuevo: " << demand1 << ", maxima: " << vecs[i].getcarga_max() << endl;
+		  cout << "Antiguo coste2: " << vecs[j].get_coste() << ", nuevo: " << cost_total2 << endl;
+		  cout << "Antigua carga2: " << vecs[j].getcarga_actual() << ", nuevo: " << demand2 << ", maxima: " << vecs[i].getcarga_max() << endl;
+		  cin.get();
+		  vecs[i].set_visitados(p1);
+		  vecs[i].set_carga(demand1);
+		  vecs[i].set_coste(cost_total1);
+		  vecs[j].set_visitados(p2);
+		  vecs[i].set_carga(demand2);
+		  vecs[i].set_coste(cost_total2);
+		  menor->set_vector(vecs);
+		  cout << "coste total: " << menor->get_coste_total() << ", ruta: " << menor->get_ruta_total() << endl;
+	   }
 
-   //cout << "Antiguo coste: " << vecs[i].get_coste() << ", nuevo: " << cost_total << endl;
-   //cout << "Antigua carga: " << vecs[i].getcarga_actual() << ", nuevo: " << demand << ", maxima: " << vecs[i].getcarga_max() << endl;
-   /*
-   for (unsigned int i = 1; i < p2.size(); i++) {
-      cost_total += md.get_distancia(i-1, i);
-      demand += md.get_demandaij(i-1,i);
+	   //cout << "Antiguo coste: " << vecs[i].get_coste() << ", nuevo: " << cost_total << endl;
+	   //cout << "Antigua carga: " << vecs[i].getcarga_actual() << ", nuevo: " << demand << ", maxima: " << vecs[i].getcarga_max() << endl;
+	   /*
+	   for (unsigned int i = 1; i < p2.size(); i++) {
+		  cost_total += md.get_distancia(i-1, i);
+		  demand += md.get_demandaij(i-1,i);
+	   }
+	   */
    }
-   */
 
 };
 /*

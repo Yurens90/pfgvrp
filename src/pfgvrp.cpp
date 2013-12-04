@@ -16,7 +16,7 @@ int main(int argc, char  *argv[]) {
    	   optimo opt(matriz);
    	   cout << "iteraciones: " << iteraciones << endl;
    	   opt.repetir(iteraciones,';',argv[2]);
-   	   for (int i = 0; i < 100000; i++)
+   	   for (int i = 0; i < 1000000; i++)
    	      opt.intercambiar(matriz);
 	}
 	else if (argc == 2) { //<entrada>, <salida>
