@@ -67,6 +67,7 @@ public:
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
    vector <int> get_visitados();
    void set_visitados(vector <int> &vt);
+   int visitados_size(); //devuelve el numero de puntos visitados;
 };
 
 class mdistancia {

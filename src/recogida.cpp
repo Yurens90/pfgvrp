@@ -157,6 +157,10 @@ void tvehiculo :: set_visitados(vector <int> &vt) {
    visitados = vt;
 };
 
+int tvehiculo :: visitados_size() {
+   return visitados.size();
+};
+
 mdistancia :: mdistancia () {
    N = 0;
    ucarga = 0;
@@ -569,6 +573,42 @@ void optimo :: repetir (int n, char delimitador, string salida) {
    }
 
  */
+
+void optimo :: intercambiar (mdistancia &md) {
+   vector <tvehiculo> vecs = menor->get_vector();
+   srand(time(NULL));
+   unsigned int i = rand()% menor->get_vehiculosusados();
+   unsigned int j = rand()% vecs[i].visitados_size();
+   unsigned int k = rand()% vecs[i].visitados_size();
+   while ((vecs[i].visitados_size() > 1) && (j == k)) //si hay mas de un punto visitado y los indices a intercambiar son iguales, repetimos hasta que sean distintos
+      k = rand() % vecs[i].visitados_size();
+   vector <int> p1 = vecs[i].get_visitados();
+   int aux = p1[j];
+   p1[j] = p1[k];
+   p1[k] = aux;
+   //calculamos los cambios que supone en el coste y carga del vehiculo el haber intercambiado los puntos
+   float cost_total1 = 0.0;
+   int demand1 = 0.0;
+   for (unsigned int ii = 1; ii < p1.size(); ii++) {
+	  cost_total1 += md.get_distancia(p1[ii-1], p1[ii]);
+	  demand1 += md.get_demandaij(p1[ii-1], p1[ii]);
+   }
+   if ((cost_total1 <= vecs[i].get_coste()) && (demand1 <= vecs[i].getcarga_max())) {
+   //if ((cost_total1 <= vecs[i].get_coste())) {
+   //if ((demand1 <= vecs[i].getcarga_max())) {
+	  cout << "mejor solucion encontrada!" << endl;
+	  cout << "Antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
+	  cout << "Antigua carga1: " << vecs[i].getcarga_actual() << ", nuevo: " << demand1 << ", maxima: " << vecs[i].getcarga_max() << endl;
+	  vecs[i].set_visitados(p1);
+	  vecs[i].set_carga(demand1);
+	  vecs[i].set_coste(cost_total1);
+	  menor->set_vector(vecs);
+	  cin.get();
+   }
+
+};
+
+/*
 void optimo :: intercambiar(mdistancia &md) {
    vector <tvehiculo> vecs = menor->get_vector();
    srand(time(NULL));
@@ -638,40 +678,13 @@ void optimo :: intercambiar(mdistancia &md) {
 
 	   //cout << "Antiguo coste: " << vecs[i].get_coste() << ", nuevo: " << cost_total << endl;
 	   //cout << "Antigua carga: " << vecs[i].getcarga_actual() << ", nuevo: " << demand << ", maxima: " << vecs[i].getcarga_max() << endl;
-	   /*
 	   for (unsigned int i = 1; i < p2.size(); i++) {
 		  cost_total += md.get_distancia(i-1, i);
 		  demand += md.get_demandaij(i-1,i);
 	   }
-	   */
    }
 
+
 };
-/*
-  vector <tvehiculo> vecs = menor->get_vector();
-  cout << "chivato 1 " << endl;
-  float coste_calculado = 0.0;
-  list <int> puntos;
-  vector<int> puntos2;
-  cout << "vecs size: " << vecs.size() << endl;
-  for (unsigned int i = 0; i < vecs.size(); i++) {
-     if (vecs[i].enuso()) { //solo vamos a iterar con los vehiculos que realmente se hayan utilizado
-		 puntos = vecs[i].get_visitados();
-		 //cout << "chivato 2" << endl;
-		 cout << "enuso: " << vecs[i].enuso() << endl;
-		 for (list<int> :: iterator it = puntos.begin(); it != puntos.end(); it++)
-			puntos2.push_back((*it));
-		// cout << "chivato 3" << endl;
-		 cout << "tamano puntos 2 : " << puntos2.size() << endl;
-		 for (unsigned int j = 1; j < puntos2.size(); j++) {
-			//coste_calculado += menor->getdistanciaij(puntos2[j-1],puntos2[j]);
-			coste_calculado += md.get_distancia(puntos2[j-1],puntos2[j]);
-			//cout << "for j:" << j  << endl;
-			//cout << "j-1: " << puntos2[j-1] << ", j: " << puntos2[j] << ", coste: " << md.get_distancia(puntos2[j-1],puntos2[j]) << " vs: " << vecs[i].get_coste() << endl;
-		 }
-		 cout << "coste calculado: " << coste_calculado << endl;
-     }
-     puntos2.clear();
-  }
-  cout << "coste calculado: " << coste_calculado << ", coste algoritmo: " << menor->get_coste_total() << endl;
-  */
+*/
+
