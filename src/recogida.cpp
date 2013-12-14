@@ -309,9 +309,9 @@ bool ruta :: buscar (vector <tvehiculo> &vecs) { //ruta parcial //siguiente es e
                 //cout << "vehiculo: " << vecs[i].getid() << ", ultimo visitado: " << vecs[i].get_ultimo() << ", siguiente punto: " << ret.getid() << endl;
                 //cin.get();
                 ret = candidatos(vecs[i].get_ultimo());
-                cout << "candidato: " << ret.getid() << endl;
-                cout << "demanda del punto: " << ret.getdemanda() << endl;
-                cout << "Carga actual del vehículo: " << vecs[i].getcarga_actual() << ", carga maxima del vehiculo: " << vecs[i].getcarga_max() << endl;
+                //cout << "candidato: " << ret.getid() << endl;
+                //cout << "demanda del punto: " << ret.getdemanda() << endl;
+                //cout << "Carga actual del vehículo: " << vecs[i].getcarga_actual() << ", carga maxima del vehiculo: " << vecs[i].getcarga_max() << endl;
                 //cin.get();
 
                 demanda = ret.getdemanda();

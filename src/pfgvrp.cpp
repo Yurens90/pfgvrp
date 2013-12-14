@@ -17,7 +17,7 @@ int main(int argc, char  *argv[]) {
    	   cout << "iteraciones: " << iteraciones << endl;
    	   opt.repetir(iteraciones,';',argv[2]);
 	}
-	else if (argc == 2) { //<entrada>, <salida>
+	else if (argc == 3) { //<entrada>, <salida>
 	   cout << "4 argumentos" << endl;
 	   solomon sol(argv[1]);
 	   sol.calcularmatriz();
@@ -28,7 +28,7 @@ int main(int argc, char  *argv[]) {
 	   //cout << "iteraciones: " << iteraciones << endl;
 	   opt.repetir(10000,';',argv[2]);
 	}
-	else if (argc == 1) { //<entrada>
+	else if (argc == 2) { //<entrada>
 	   solomon sol(argv[1]);
 	   sol.mostrarlistado();
 	   sol.calcularmatriz();
@@ -44,3 +44,4 @@ int main(int argc, char  *argv[]) {
 	cin.get();
 
 }
+
