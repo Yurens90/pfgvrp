@@ -18,7 +18,7 @@ class precogida { //la idea es hacerla abstracta
    //String nombre;
    int id; //numero identificador
    float distancia; //distancia
-   bool visitado;
+   bool visitado;//
    int demanda;
 public:
    precogida ();
