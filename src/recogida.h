@@ -13,6 +13,7 @@ using namespace std;
 #ifndef RECOGIDA_H_
 #define RECOGIDA_H_
 
+
 class precogida { //la idea es hacerla abstracta
    //String nombre;
    int id; //numero identificador
