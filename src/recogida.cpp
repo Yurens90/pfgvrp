@@ -485,7 +485,7 @@ double timeval_diff(struct timeval *a, struct timeval *b){
 }
 
 //implementar salida
-void optimo :: repetir (int n, char delimitador, string salida) {
+void optimo :: repetir (int n, char delimitador, string salida, int m) {
    menor->ejecutar();
    //struct timeval inicio, fin;
    unsigned int mejorit = 0;
@@ -537,50 +537,43 @@ void optimo :: repetir (int n, char delimitador, string salida) {
    };
    gettimeofday(&endTimetot,NULL);
    cout << "Menor: " << menor->get_ruta_total() << endl;
-   out << "Iteracion_mejor_solucion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
+   int i = 0;
+   //gettimeofday(&iniTime, NULL);
+   while (!intercambiar() && i < m) {
+      i++;
+      if (i == m*0.5)
+         cout << i << endl;
+   }
+   cout << "fuera: " << i << endl;
+   if (i < m) {
+      out << "Solucion mejorada con intercambio interno:" << endl;
+      out << "Iteracion_mejor_solucion_mejorada" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
+      out << mejorit << delimitador << mejortiempo << delimitador << menor->get_ruta_total() << delimitador << menor->get_coste_total() << delimitador << nvehiculos << endl;
+   }
+   out << "Iteracion_mejor_solucion_sin_mejorar" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << mejorit << delimitador << mejortiempo << delimitador << mejor_ruta << delimitador << menor_coste << delimitador << nvehiculos << endl;
    out << "Numero_iteracion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << ss.str();
-   out << timeval_diff(&endTimetot,&iniTimetot);
+   out << "Tiempo total: " << timeval_diff(&endTimetot,&iniTimetot);
    cout << "Tiempo total: " << timeval_diff(&endTimetot,&iniTimetot) << " segundos" << endl;
+
    out.close();
+
+
    //cout << "Iteracion del mejor: " << mejorit << endl;
    //cout << "El mejor: " << menor->get_coste_total() << endl;
    //cout << "ruta: " << menor->get_ruta() << endl;
 };
 
-/*
-   vector <tvehiculo> vecs = menor->get_vector();
-   //vector< <vector <int> > > pvisitados;
-   vector <vector <int> > pvisitados;
-   for (unsigned int i = 0; i < vecs.size();i++) {
-      if (vecs[i].enuso()) {
-         pvisitados.push_back(vecs[i].get_visitados());
-      }
-   }
-   for (unsigned int i = 0; i < pvisitados.size(); i++) {
-      for (unsigned int j = 1; j < pvisitados[i].size()-1; j++) {
-         for (unsigned int z = 0; z < pvisitados.size(); z++) {
-        	 for (unsigned int k = 1; k < pvisitados[z].size()-1; k++) {
-			    cout << pvisitados[i][j] << " vs " << pvisitados[z][k] << ", " ;
-			    //cin.get();
-
-        	 }
-		     cout << endl;
-		     //cin.get();
-         }
-      }
-   }
-
- */
-
-void optimo :: intercambiar (mdistancia &md) {
+bool optimo :: intercambiar () {
    vector <tvehiculo> vecs = menor->get_vector();
    srand(time(NULL));
    unsigned int i = rand()% menor->get_vehiculosusados();
    unsigned int j = rand()% vecs[i].visitados_size();
+   while (j == 0)
+      j = rand()% vecs[i].visitados_size();
    unsigned int k = rand()% vecs[i].visitados_size();
-   while ((vecs[i].visitados_size() > 1) && (j == k)) //si hay mas de un punto visitado y los indices a intercambiar son iguales, repetimos hasta que sean distintos
+   while ((vecs[i].visitados_size() > 1) && (j == k) && (k == 0)) //si hay mas de un punto visitado y los indices a intercambiar son iguales, repetimos hasta que sean distintos
       k = rand() % vecs[i].visitados_size();
    vector <int> p1 = vecs[i].get_visitados();
    int aux = p1[j];
@@ -590,8 +583,8 @@ void optimo :: intercambiar (mdistancia &md) {
    float cost_total1 = 0.0;
    int demand1 = 0.0;
    for (unsigned int ii = 1; ii < p1.size(); ii++) {
-	  cost_total1 += md.get_distancia(p1[ii-1], p1[ii]);
-	  demand1 += md.get_demandaij(p1[ii-1], p1[ii]);
+	  cost_total1 += matr.get_distancia(p1[ii-1], p1[ii]);
+	  demand1 += matr.get_demandaij(p1[ii-1], p1[ii]);
    }
    if ((cost_total1 <= vecs[i].get_coste()) && (demand1 <= vecs[i].getcarga_max())) {
    //if ((cost_total1 <= vecs[i].get_coste())) {
@@ -603,8 +596,10 @@ void optimo :: intercambiar (mdistancia &md) {
 	  vecs[i].set_carga(demand1);
 	  vecs[i].set_coste(cost_total1);
 	  menor->set_vector(vecs);
-	  cin.get();
+	  //cin.get();
+	  return true;
    }
+   return false;
 
 };
 

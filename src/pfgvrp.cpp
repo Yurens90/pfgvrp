@@ -15,9 +15,8 @@ int main(int argc, char  *argv[]) {
        int iteraciones = atoi(argv[3]);
    	   optimo opt(matriz);
    	   cout << "iteraciones: " << iteraciones << endl;
-   	   opt.repetir(iteraciones,';',argv[2]);
-   	   for (int i = 0; i < 1000000; i++)
-   	      opt.intercambiar(matriz);
+   	   opt.repetir(iteraciones,';',argv[2], 1000000);
+   	   //for (int i = 0; i < 1000000; i++)
 	}
 	else if (argc == 2) { //<entrada>, <salida>
 	   cout << "4 argumentos" << endl;
@@ -28,7 +27,7 @@ int main(int argc, char  *argv[]) {
 	   //int iteraciones = atoi(argv[3]);
 	   optimo opt(matriz);
 	   //cout << "iteraciones: " << iteraciones << endl;
-	   opt.repetir(10000,';',argv[2]);
+	   opt.repetir(10000,';',argv[2],1000000);
 	}
 	else if (argc == 1) { //<entrada>
 	   solomon sol(argv[1]);
@@ -37,7 +36,7 @@ int main(int argc, char  *argv[]) {
 	   mdistancia matriz;
 	   matriz = sol.convertir();
 	   optimo opt(matriz);
-	   opt.repetir(10000,';',"salida.txt");
+	   opt.repetir(10000,';',"salida.txt",1000000);
 	}
 	else
        cout << "Argumentos insuficientes" << endl;
