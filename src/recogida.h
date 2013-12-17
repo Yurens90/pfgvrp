@@ -141,8 +141,8 @@ private:
    mdistancia matr;
 public:
   optimo (mdistancia &mat);
-  void repetir (int i,char delimitador, string salida);
-  void intercambiar(mdistancia &md);
+  void repetir (int n, char delimitador, string salida, int m);
+  bool intercambiar();
 };
 
 #endif
