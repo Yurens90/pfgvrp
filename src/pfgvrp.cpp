@@ -11,29 +11,39 @@
 using namespace std;
 
 int main(int argc, char  *argv[]) {
-	cout << "argc: " << argc << endl;
-	if (argc == 4) { //nombre_ejecutable, <entrada>, <salida>, iteraciones
-	   cout << "4 argumentos" << endl;
+	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones, intercambios
 	   solomon sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
        int iteraciones = atoi(argv[3]);
    	   optimo opt(matriz);
-   	   cout << "iteraciones: " << iteraciones << endl;
-   	   opt.repetir(iteraciones,';',argv[2], N_INTERCAMBIOS);
-   	   //for (int i = 0; i < 1000000; i++)
+   	   opt.repetir(iteraciones,';',argv[2], atoi(argv[4]));
 	}
-	else if (argc == 2) { //nombre_ejecutable, <entrada>
-	   cout << "1 argumento" << endl;
+	else if (argc == 4) { //nombre_ejecutable, <entrada>, <salida>, iteraciones
 	   solomon sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
-	   //int iteraciones = atoi(argv[3]);
+       int iteraciones = atoi(argv[3]);
+   	   optimo opt(matriz);
+   	   opt.repetir(iteraciones,';',argv[2], N_INTERCAMBIOS);
+	}
+	else if (argc == 3) { //nombre_ejecutable, <entrada> <salida>
+	   solomon sol(argv[1]);
+	   sol.calcularmatriz();
+	   mdistancia matriz;
+	   matriz = sol.convertir();
 	   optimo opt(matriz);
-	   //cout << "iteraciones: " << iteraciones << endl;
 	   opt.repetir(N_ITERACIONES,';',argv[2],N_INTERCAMBIOS);
+	}
+	else if (argc == 2) {
+	   solomon sol(argv[1]);
+	   sol.calcularmatriz();
+	   mdistancia matriz;
+	   matriz = sol.convertir();
+	   optimo opt(matriz);
+	   opt.repetir(N_ITERACIONES,';',OUT_FILE,N_INTERCAMBIOS);
 	}
 	else if (argc == 1) { //nombre_ejecutable  =>  Muestra la ayuda
 	   cout << "Argumentos insuficientes!" << endl;
@@ -53,8 +63,5 @@ int main(int argc, char  *argv[]) {
 	*/
 	else
        cout << "Argumentos insuficientes" << endl;
-	cout << "fin" << endl;
-	cout << "Puse cualquier tecla para finalizar..." << endl;
-	//cin.get();
 
 }
