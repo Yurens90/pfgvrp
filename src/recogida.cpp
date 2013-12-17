@@ -412,15 +412,9 @@ void resolver :: ejecutar() {
      // cout << "Iteracion : " << i << endl;
       i++;
    }
-   //if (i == vehiculos.size())
-      //cout << "Ha sido necesario usar todos los vehiculos" << endl;
-   //if (!existe)
-      //cout << "Se han visitado todos los puntos sin usar el total de vehiculos" << endl;
 };
 
 float resolver :: get_coste_total() {
-	//cout << "LLamada Get coste total: " << coste_total << endl;
-	//cin.get();
    coste_total = 0.0;
    for (unsigned int i = 0; i < get_vehiculosusados(); i++)
       coste_total+=vehiculos[i].get_coste();
@@ -483,17 +477,13 @@ double timeval_diff(struct timeval *a, struct timeval *b){
 //implementar salida
 void optimo :: repetir (int n, char delimitador, string salida, int m) {
    menor->ejecutar();
-   //struct timeval inicio, fin;
    unsigned int mejorit = 0;
    double mejortiempo = 0.0;
    stringstream ss;
-   //clock_t t1;
-   //clock_t t2;
    ofstream out(salida.c_str());
    string mejor_ruta;
    float menor_coste = menor->get_coste_total();
    unsigned int nvehiculos = 0;
-   //ofstream out("salida.txt");
    struct timeval iniTime, endTime, parcialtime;
    struct timeval iniTimetot, endTimetot;
 
@@ -503,21 +493,12 @@ void optimo :: repetir (int n, char delimitador, string salida, int m) {
    for (int i = 0;i < n; i++) {
 	   if (i == n * 0.5)
 	      cout << "iteracion: " << i << endl;
-	  // t1 = clock();
 	   gettimeofday(&iniTime, NULL);
-	  //gettimeofday(&inicio, NULL);
-	  //cout << endl << endl << endl;
 	  resolver *sol = new resolver(matr);
 	  sol->ejecutar();
-	  //cout << "Sol->getcoste... " << sol->get_coste_total() << " VS " << menor->get_coste_total() << endl;
-	  //gettimeofday(&fin, NULL);
-	  //double tiempo = ((fin.tv_sec+(float)fin.tv_usec/1000000)-(inicio.tv_sec+(float)inicio.tv_usec/1000000));
-	  //t2 = clock();
 	  gettimeofday(&endTime, NULL);
-	  //double tiempo = (double)(t2 - t1) / CLOCKS_PER_SEC;
 	  tiempo += timeval_diff(&endTime, &iniTime);
 	  if (sol->get_coste_total() < menor_coste) {
-		 //cout << "---> Se ha encontrado una mejor" << endl;
 		 (*menor) =  (*sol);
 		 gettimeofday(&parcialtime, NULL);
 		 mejortiempo = timeval_diff(&parcialtime,&iniTime);
@@ -529,7 +510,6 @@ void optimo :: repetir (int n, char delimitador, string salida, int m) {
 	  }
 	  ss << i << delimitador << tiempo << delimitador << sol->get_ruta_total() << delimitador << sol->get_coste_total() << delimitador << sol->get_vehiculosusados() << endl;
 	  delete sol;
-	  //cout << "Iteracion: " << i << endl;
    };
    int i = 0;
    while (!intercambiar() && i < m) {
@@ -553,30 +533,6 @@ void optimo :: repetir (int n, char delimitador, string salida, int m) {
    out.close();
 };
 
-/*
-   vector <tvehiculo> vecs = menor->get_vector();
-   //vector< <vector <int> > > pvisitados;
-   vector <vector <int> > pvisitados;
-   for (unsigned int i = 0; i < vecs.size();i++) {
-      if (vecs[i].enuso()) {
-         pvisitados.push_back(vecs[i].get_visitados());
-      }
-   }
-   for (unsigned int i = 0; i < pvisitados.size(); i++) {
-      for (unsigned int j = 1; j < pvisitados[i].size()-1; j++) {
-         for (unsigned int z = 0; z < pvisitados.size(); z++) {
-        	 for (unsigned int k = 1; k < pvisitados[z].size()-1; k++) {
-			    cout << pvisitados[i][j] << " vs " << pvisitados[z][k] << ", " ;
-			    //cin.get();
-
-        	 }
-		     cout << endl;
-		     //cin.get();
-         }
-      }
-   }
-
- */
 bool optimo :: intercambiar() {
    vector <tvehiculo> vecs = menor->get_vector();
    srand(time(NULL));
@@ -584,21 +540,16 @@ bool optimo :: intercambiar() {
    if (menor->get_vehiculosusados() > 1) {
 	   unsigned int i = rand()% menor->get_vehiculosusados();
 	   while (i == 0) {
-		  //cout << "1" << endl;
 		  i = rand()% menor->get_vehiculosusados();
 	   }
 	   unsigned int j = rand()% menor->get_vehiculosusados();
 	   while (j == i && vecs.size() > 1) {
 		  j = rand()% menor->get_vehiculosusados();
-		  //cout << "2" << endl;
 	   }
 	   vector <int> p1 = vecs[i].get_visitados();
 	   vector <int> p2 = vecs[j].get_visitados();
 	   unsigned int k = rand()% p1.size();
-	   //cout << "p1 size : " << p1.size() << ", i: " << i << endl;
-	   //cin.get();
 	   while (k == 0) {
-		   //cout << "3" << endl;
 		  k = rand()% p1.size();
 	   }
 	   unsigned int z = rand()% p2.size();
