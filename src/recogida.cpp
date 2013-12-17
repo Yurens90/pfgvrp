@@ -482,7 +482,7 @@ double timeval_diff(struct timeval *a, struct timeval *b){
     (double)(b->tv_sec + (double)b->tv_usec/1000000);
 }
 
-void optimo :: repetir (int n, char delimitador, string salida, int m) {
+void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) {
    menor->ejecutar();
    //struct timeval inicio, fin;
    unsigned int mejorit = 0;
@@ -490,7 +490,8 @@ void optimo :: repetir (int n, char delimitador, string salida, int m) {
    stringstream ss;
    ofstream out(salida.c_str());
    string mejor_ruta;
-   float menor_coste = menor->get_coste_total();
+   //float menor_coste = menor->get_coste_total();
+   float menor_coste = 999999;
    unsigned int nvehiculos = 0;
    struct timeval iniTime, endTime, parcialtime;
    struct timeval iniTimetot, endTimetot;
@@ -524,14 +525,17 @@ void optimo :: repetir (int n, char delimitador, string salida, int m) {
    };
    gettimeofday(&endTimetot,NULL);
    cout << "Menor: " << menor->get_ruta_total() << endl;
-   int i = 0;
-   while (!intercambiar() && i < m) {
+   unsigned int i = 0;
+   cout << "Intercambiando entre vehiculos..." << endl;
+   bool intercambiado = false;
+   while (i < m) {
+      if (intercambiar())
+         intercambiado = true;
       i++;
-      if (i == m*0.5)
-         cout << i << endl;
    }
-   cout << "Iteracion en la que se intercambio: " << i << endl;
-   if (i < m) {
+   cout << "intercambiado : " << intercambiado << endl;
+   //cin.get();
+   if (intercambiado) {
       out << "Solucion mejorada con intercambio interno:" << endl;
       out << "Iteracion_mejor_solucion_mejorada" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
       out << mejorit << delimitador << mejortiempo << delimitador << menor->get_ruta_total() << delimitador << menor->get_coste_total() << delimitador << nvehiculos << endl;
@@ -554,9 +558,10 @@ bool optimo :: intercambiar () {
    while (j == 0)
       j = rand()% vecs[i].visitados_size();
    unsigned int k = rand()% vecs[i].visitados_size();
-   while ((vecs[i].visitados_size() > 1) && (j == k) && (k == 0)) //si hay mas de un punto visitado y los indices a intercambiar son iguales, repetimos hasta que sean distintos
-      k = rand() % vecs[i].visitados_size();
    vector <int> p1 = vecs[i].get_visitados();
+   while ((vecs[i].visitados_size() > 1) && (j == k) && (p1[k] == 0)) //si hay mas de un punto visitado y los indices a intercambiar son iguales, repetimos hasta que sean distintos
+      k = rand() % vecs[i].visitados_size();
+
    int aux = p1[j];
    p1[j] = p1[k];
    p1[k] = aux;
