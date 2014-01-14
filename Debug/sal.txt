@@ -1,0 +1,9 @@
+Solucion mejorada con intercambio interno:
+Iteracion_mejor_solucion_mejorada;tiempo;ruta;coste;numero_vehiculos_usados
+0;0;0 21 22 23 24 10 7 3 6 4 1 5 9 11 2 8 0 0 13 17 19 15 16 18 14 25 0 20 12 0 0 ;300.714;3
+Iteracion_mejor_solucion_sin_mejorar;tiempo;ruta;coste;numero_vehiculos_usados
+0;0;0 21 22 23 24 10 7 3 6 4 1 5 9 11 2 8 0 0 13 17 19 15 16 18 14 25 0 0 12 20 0 ;310.714;3
+Numero_iteracion;tiempo;ruta;coste;numero_vehiculos_usados
+0;0;0 21 22 23 24 10 7 3 6 4 1 5 9 11 2 8 0 0 13 17 19 15 16 18 14 25 0 0 12 20 0 ;310.714;3
+1;0;0 22 25 23 21 20 10 7 3 4 1 5 2 8 0 0 24 11 6 13 18 19 17 14 16 9 15 0 0 12 0 ;336.522;3
+Tiempo total: 0.000969
