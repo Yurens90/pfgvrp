@@ -473,7 +473,6 @@ void optimo :: repetir (int n, char delimitador, string salida) {
 
    cout << "Espere..." << endl;
    double tiempo = 0.0;
-   bool resuelto;
    gettimeofday(&iniTimetot,NULL);
    for (int i = 0;i < n; i++) {
 	   if (i == n * 0.5)

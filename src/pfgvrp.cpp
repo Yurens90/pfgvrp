@@ -1,3 +1,7 @@
+#define IN_FILE "datos.txt"
+#define OUT_FILE "salida.txt"
+#define N_ITERACIONES 1000
+#define N_INTERCAMBIOS 1000000
 
 #include <iostream>
 #include "recogida.h"
@@ -13,7 +17,7 @@ int main(int argc, char  *argv[]) {
 	   matriz = sol.convertir();
        int iteraciones = atoi(argv[3]);
    	   optimo opt(matriz);
-   	   opt.repetir(iteraciones,';',argv[2], atoi(argv[4]));
+   	   opt.repetir(iteraciones,';',argv[2]);
 	}
 	else if (argc == 4) { //nombre_ejecutable, <entrada>, <salida>, iteraciones
 	   solomon sol(argv[1]);
