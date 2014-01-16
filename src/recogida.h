@@ -140,6 +140,7 @@ class optimo {
 private:
    resolver * inicial;
    resolver * menor;
+   resolver * inter;
    mdistancia matr;
 public:
   optimo (mdistancia &mat);
