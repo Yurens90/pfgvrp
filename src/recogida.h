@@ -71,6 +71,7 @@ public:
    void set_visitado(int i, int valor);
    void set_visitados(vector <int> &vt);
    int visitados_size(); //devuelve el numero de puntos visitados;
+
 };
 
 class mdistancia {

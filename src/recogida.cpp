@@ -540,11 +540,11 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    gettimeofday(&ininterTime,NULL);
    float menor_coste_inter = 999999;
    inter = new resolver(matr);
-   inter->ejecutar();
+   //inter->ejecutar();
+   (*inter) = (*menor);
    double inter_tiempo = 0.0;
    bool intercambiado = false;
    intercambiar();
-   cin.get();
    /*
    while (i < m) {
   	  //cout << "menor coste inter: " << menor_coste_inter << endl;
@@ -574,21 +574,80 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
 
    out.close();
 };
+/*
+ 		      int aux = vecs[i-1].get_visitado(j);
+		      vecs[i-1].set_visitado(j, vecs[i].get_visitado(k));
+		      vecs[i].set_visitado(k, aux);
+ */
+
+void swap(int &x, int &y) {
+   int aux = x;
+   x = y;
+   y = aux;
+}
 
 bool optimo :: intercambiar () {
    //resolver * sol = NULL;
    //(*sol) = (*menor);
+   bool encontrado = false;
    vector <tvehiculo> vecs = menor->get_vector();
-
+   vector <tvehiculo> bak = menor->get_vector();
+   float menor_cost_inter = menor->get_coste_total(); // el menor coste total encontrado en los intercambios. lo inicializamos al valor del menor encontrado con el grasp
+   float cost_total1 = 0.0;
+   int demand1 = 0.0;
+   float cost_total2 = 0.0;
+   int demand2 = 0.0;
    for (int i = 1; i < menor->get_vehiculosusados();i++) {
 	   for (int j = 1; j < vecs[i-1].visitados_size()-1;j++) {
 		   for (int k = 1; k < vecs[i].visitados_size()-1;k++) {
-		      cout << vecs[i-1].get_visitado(j) << ", vs: " << vecs[i].get_visitado(k) << endl;
+		      //cout << vecs[i-1].get_visitado(j) << ", vs: " << vecs[i].get_visitado(k) << endl;
+              vector<int> v1 = vecs[i-1].get_visitados();
+              vector<int> v2 = vecs[i].get_visitados();
+              cout << v1[j] << ", vs: " << v2[k] << endl;
+              swap(v1[j], v2[k]);
+		     // for (unsigned int s = 0; s < p1.size(); s++) {
+		   	    // cost_total1 += matr.get_distancia(p1[ii-1], p1[ii]);
+		   	    // demand1 += matr.get_demandaij(p1[ii-1], p1[ii]);
+              cost_total1 = 0.0;
+              cost_total2 = 0.0;
+              demand1 = 0;
+              demand2 = 0;
+              for (unsigned int ii = 1; ii < v1.size(); ii++) {
+                      cost_total1 += matr.get_distancia(v1[ii-1], v1[ii]);
+                      demand1 += matr.get_demandaij(v1[ii-1], v1[ii]);
+              }
+
+              for (unsigned int ii = 1; ii < v2.size(); ii++) {
+                      cost_total2 += matr.get_distancia(v2[ii-1], v2[ii]);
+                      demand2 += matr.get_demandaij(v2[ii-1], v2[ii]);
+              }
+              if (((cost_total1 + cost_total2) <  (vecs[i-1].get_coste()+vecs[i].get_coste())) && demand1 <= vecs[i-1].getcarga_max() && demand2 <= vecs[i].getcarga_max()){
+            	  cout << "mejor solucion" << endl;
+                  cout << "antiguo coste1: " << vecs[i-1].get_coste() << ", nuevo: " << cost_total1 << endl;
+                  cout << "antiguo coste2: " << vecs[i].get_coste() << ", nuevo: " << cost_total2 << endl;
+                  vecs[i-1].set_visitados(v1);
+                  vecs[i-1].set_carga(demand1);
+                  vecs[i-1].set_coste(cost_total1);
+                  vecs[i].set_visitados(v2);
+                  vecs[i].set_carga(demand2);
+                  vecs[i].set_coste(cost_total2);
+                  inter->set_vector(vecs);
+                  if (inter->get_coste_total() < menor_cost_inter) {
+                      cout << "Total menor: " << menor_cost_inter << ", total nuevo: " << inter->get_coste_total() << endl;
+                      menor_cost_inter = inter->get_coste_total();
+                  }
+                  else
+                     inter->set_vector(bak);
+                  //cin.get();
+                  encontrado = true;
+              }
+
+		      }
 		   }
 
 	   }
-
-   }
+   return encontrado;
+}
 
 /*
    cout << "visitados size: " << vecs[i].visitados_size() << endl;
@@ -632,6 +691,6 @@ bool optimo :: intercambiar () {
 	  }
    }
    return false;
-*/
-};
+
+}; */
 
