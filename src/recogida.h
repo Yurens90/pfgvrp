@@ -146,9 +146,10 @@ private:
    resolver * inter;
    mdistancia matr;
 public:
-  optimo (mdistancia &mat);
-  void repetir (int i,char delimitador, string salida, unsigned int m);
-  bool intercambiar();
+   ofstream out;
+   optimo (mdistancia &mat);
+   void repetir (int i,char delimitador, string salida, unsigned int m);
+   bool intercambiar(char del);
 };
 
 #endif

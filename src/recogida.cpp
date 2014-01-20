@@ -497,13 +497,13 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    unsigned int mejorit = 0;
    double mejortiempo = 0.0;
    stringstream ss;
-   ofstream out(salida.c_str());
+   out = ofstream(salida.c_str());
    string mejor_ruta;
    //float menor_coste = menor->get_coste_total();
    float menor_coste = 999999;
    unsigned int nvehiculos = 0;
-   struct timeval iniTime, endTime, parcialtime,ininterTime;
-   struct timeval iniTimetot, endTimetot,endinterTime;
+   struct timeval iniTime, endTime, parcialtime;
+   struct timeval iniTimetot, endTimetot;
 
    cout << "Espere..." << endl;
    double tiempo = 0.0;
@@ -534,17 +534,17 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    };
    gettimeofday(&endTimetot,NULL);
    cout << "Menor: " << menor->get_ruta_total() << endl;
-   unsigned int i = 0;
+   //unsigned int i = 0;
    cout << "Intercambiando entre vehiculos..." << endl;
    int it = -1;
-   gettimeofday(&ininterTime,NULL);
-   float menor_coste_inter = 999999;
+
+   //float menor_coste_inter = 999999;
    inter = new resolver(matr);
    //inter->ejecutar();
    (*inter) = (*menor);
-   double inter_tiempo = 0.0;
-   bool intercambiado = false;
-   intercambiar();
+   //double inter_tiempo = 0.0;
+  // bool intercambiado = false;
+   intercambiar(delimitador);
    /*
    while (i < m) {
   	  //cout << "menor coste inter: " << menor_coste_inter << endl;
@@ -560,12 +560,6 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
       i++;
    }
    */
-   if (intercambiado) {
-      out << "Iteracion_de_intercambio" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
-      out << it << delimitador << inter_tiempo << delimitador << inter->get_ruta_total() << delimitador << inter->get_coste_total() << delimitador << nvehiculos << endl;
-   }
-   else
-      out << "No se encontro solucion intercambiando" << endl;
    out << "Iteracion_mejor_solucion_intercambiar" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << mejorit << delimitador << mejortiempo << delimitador << mejor_ruta << delimitador << menor_coste << delimitador << nvehiculos << endl;
    out << "Numero_iteracion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
@@ -586,7 +580,9 @@ void swap(int &x, int &y) {
    y = aux;
 }
 
-bool optimo :: intercambiar () {
+bool optimo :: intercambiar (char del) {
+   struct timeval ininterTime;
+   struct timeval endinterTime;
    //resolver * sol = NULL;
    //(*sol) = (*menor);
    bool encontrado = false;
@@ -597,9 +593,12 @@ bool optimo :: intercambiar () {
    int demand1 = 0.0;
    float cost_total2 = 0.0;
    int demand2 = 0.0;
+   gettimeofday(&ininterTime,NULL);
+   unsigned int counter = 0;
    for (int i = 1; i < menor->get_vehiculosusados();i++) {
 	   for (int j = 1; j < vecs[i-1].visitados_size()-1;j++) {
 		   for (int k = 1; k < vecs[i].visitados_size()-1;k++) {
+		      counter++;
 		      //cout << vecs[i-1].get_visitado(j) << ", vs: " << vecs[i].get_visitado(k) << endl;
               vector<int> v1 = vecs[i-1].get_visitados();
               vector<int> v2 = vecs[i].get_visitados();
@@ -613,16 +612,16 @@ bool optimo :: intercambiar () {
               demand1 = 0;
               demand2 = 0;
               for (unsigned int ii = 1; ii < v1.size(); ii++) {
-                      cost_total1 += matr.get_distancia(v1[ii-1], v1[ii]);
-                      demand1 += matr.get_demandaij(v1[ii-1], v1[ii]);
+                 cost_total1 += matr.get_distancia(v1[ii-1], v1[ii]);
+                 demand1 += matr.get_demandaij(v1[ii-1], v1[ii]);
               }
 
               for (unsigned int ii = 1; ii < v2.size(); ii++) {
-                      cost_total2 += matr.get_distancia(v2[ii-1], v2[ii]);
-                      demand2 += matr.get_demandaij(v2[ii-1], v2[ii]);
+                 cost_total2 += matr.get_distancia(v2[ii-1], v2[ii]);
+                 demand2 += matr.get_demandaij(v2[ii-1], v2[ii]);
               }
               if (((cost_total1 + cost_total2) <  (vecs[i-1].get_coste()+vecs[i].get_coste())) && demand1 <= vecs[i-1].getcarga_max() && demand2 <= vecs[i].getcarga_max()){
-            	  cout << "mejor solucion" << endl;
+                  cout << "mejor solucion" << endl;
                   cout << "antiguo coste1: " << vecs[i-1].get_coste() << ", nuevo: " << cost_total1 << endl;
                   cout << "antiguo coste2: " << vecs[i].get_coste() << ", nuevo: " << cost_total2 << endl;
                   vecs[i-1].set_visitados(v1);
@@ -635,17 +634,27 @@ bool optimo :: intercambiar () {
                   if (inter->get_coste_total() < menor_cost_inter) {
                       cout << "Total menor: " << menor_cost_inter << ", total nuevo: " << inter->get_coste_total() << endl;
                       menor_cost_inter = inter->get_coste_total();
+                      gettimeofday(&endinterTime,NULL);
+                      encontrado = 1;
                   }
                   else
                      inter->set_vector(bak);
                   //cin.get();
-                  encontrado = true;
-              }
 
-		      }
-		   }
+             }
 
+		  }
 	   }
+
+   }
+   if (menor_cost_inter < menor->get_coste_total()) {
+	  cout << "WEEEeee " << endl;
+      //out << "Iteracion_de_intercambio" << del << "tiempo" << del << "ruta" << del << "coste" << del << "numero_vehiculos_usados" << endl;
+      //out << counter << del << timeval_diff(&endinterTime,&ininterTime) << del << inter->get_ruta_total() << del << inter->get_coste_total() << del << inter->get_vehiculosusados() << endl;
+   }
+   else {
+      //out << "No se encontro solucion intercambiando" << endl;
+   }
    return encontrado;
 }
 
