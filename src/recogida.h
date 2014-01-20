@@ -13,6 +13,7 @@ using namespace std;
 #ifndef RECOGIDA_H_
 #define RECOGIDA_H_
 
+
 class precogida { //la idea es hacerla abstracta
    //String nombre;
    int id; //numero identificador
@@ -66,7 +67,11 @@ public:
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
    vector <int> get_visitados();
+   int get_visitado(int i);
+   void set_visitado(int i, int valor);
    void set_visitados(vector <int> &vt);
+   int visitados_size(); //devuelve el numero de puntos visitados;
+
 };
 
 class mdistancia {
@@ -138,11 +143,13 @@ class optimo {
 private:
    resolver * inicial;
    resolver * menor;
+   resolver * inter;
    mdistancia matr;
 public:
-  optimo (mdistancia &mat);
-  void repetir (int n, char delimitador, string salida, unsigned int m);
-  bool intercambiar();
+   ofstream out;
+   optimo (mdistancia &mat);
+   void repetir (int i,char delimitador, string salida, unsigned int m);
+   bool intercambiar(char del);
 };
 
 #endif
