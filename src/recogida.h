@@ -67,6 +67,8 @@ public:
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
    vector <int> get_visitados();
+   int get_visitado(int i);
+   void set_visitado(int i, int valor);
    void set_visitados(vector <int> &vt);
    int visitados_size(); //devuelve el numero de puntos visitados;
 };

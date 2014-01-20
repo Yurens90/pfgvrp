@@ -159,6 +159,14 @@ int tvehiculo :: visitados_size() {
    return visitados.size();
 };
 
+int tvehiculo :: get_visitado(int i) {
+   return visitados[i];
+};
+
+void tvehiculo :: set_visitado(int i, int valor) {
+   visitados[i] = valor;
+};
+
 mdistancia :: mdistancia () {
    N = 0;
    ucarga = 0;
@@ -535,6 +543,9 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    inter->ejecutar();
    double inter_tiempo = 0.0;
    bool intercambiado = false;
+   intercambiar();
+   cin.get();
+   /*
    while (i < m) {
   	  //cout << "menor coste inter: " << menor_coste_inter << endl;
       //if (intercambiar() || (i == 0)) {
@@ -548,6 +559,7 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
       }
       i++;
    }
+   */
    if (intercambiado) {
       out << "Iteracion_de_intercambio" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
       out << it << delimitador << inter_tiempo << delimitador << inter->get_ruta_total() << delimitador << inter->get_coste_total() << delimitador << nvehiculos << endl;
@@ -567,12 +579,18 @@ bool optimo :: intercambiar () {
    //resolver * sol = NULL;
    //(*sol) = (*menor);
    vector <tvehiculo> vecs = menor->get_vector();
-   unsigned int i = rand()% menor->get_vehiculosusados();
-   int counter = 0;
-/*   if (vecs[i].visitados_size() < 3) {
-	   while ((vecs[i].visitados_size() < 3) && counter < vecs.size() * 100)
-	      i = rand()% menor->get_vehiculosusados();
-   } */
+
+   for (int i = 1; i < menor->get_vehiculosusados();i++) {
+	   for (int j = 1; j < vecs[i-1].visitados_size()-1;j++) {
+		   for (int k = 1; k < vecs[i].visitados_size()-1;k++) {
+		      cout << vecs[i-1].get_visitado(j) << ", vs: " << vecs[i].get_visitado(k) << endl;
+		   }
+
+	   }
+
+   }
+
+/*
    cout << "visitados size: " << vecs[i].visitados_size() << endl;
    if (vecs[i].visitados_size() < 3)
       return false;
@@ -614,5 +632,6 @@ bool optimo :: intercambiar () {
 	  }
    }
    return false;
+*/
 };
 
