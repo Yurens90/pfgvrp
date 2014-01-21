@@ -570,48 +570,49 @@ bool optimo :: intercambiar (char del) {
    int demand2 = 0.0;
    gettimeofday(&ininterTime,NULL);
    unsigned int counter = 0;
-   for (unsigned int i = 1; i < menor->get_vehiculosusados();i++) {
-	   for (int j = 1; j < vecs[i-1].visitados_size()-1;j++) {
+   for (unsigned int i = 0; i < menor->get_vehiculosusados();i++) {
+	   for (int j = 1; j < vecs[i].visitados_size()-1;j++) {
 		   for (int k = 1; k < vecs[i].visitados_size()-1;k++) {
 		      counter++;
-              vector<int> v1 = vecs[i-1].get_visitados();
-              vector<int> v2 = vecs[i].get_visitados();
-              cout << v1[j] << ", vs: " << v2[k] << endl;
-              swap(v1[j], v2[k]);
-              cost_total1 = 0.0;
-              cost_total2 = 0.0;
-              demand1 = 0;
-              demand2 = 0;
-              for (unsigned int ii = 1; ii < v1.size(); ii++) {
-                 cost_total1 += matr.get_distancia(v1[ii-1], v1[ii]);
-                 demand1 += matr.get_demandaij(v1[ii-1], v1[ii]);
-              }
+              vector<int> v1 = vecs[i].get_visitados();
+              //vector<int> v2 = vecs[i].get_visitados();
+              if (j != k) {
+				  cout << v1[j] << ", vs: " << v1[k] << endl;
+				  swap(v1[j], v1[k]);
+				  cost_total1 = 0.0;
+				  //cost_total2 = 0.0;
+				  demand1 = 0;
+				  //demand2 = 0;
+				  for (unsigned int ii = 1; ii < v1.size(); ii++) {
+					 cost_total1 += matr.get_distancia(v1[ii-1], v1[ii]);
+					 demand1 += matr.get_demandaij(v1[ii-1], v1[ii]);
+				  }
 
-              for (unsigned int ii = 1; ii < v2.size(); ii++) {
-                 cost_total2 += matr.get_distancia(v2[ii-1], v2[ii]);
-                 demand2 += matr.get_demandaij(v2[ii-1], v2[ii]);
-              }
-              if (((cost_total1 + cost_total2) <  (vecs[i-1].get_coste()+vecs[i].get_coste())) && demand1 <= vecs[i-1].getcarga_max() && demand2 <= vecs[i].getcarga_max()){
-                  cout << "mejor solucion" << endl;
-                  cout << "antiguo coste1: " << vecs[i-1].get_coste() << ", nuevo: " << cost_total1 << endl;
-                  cout << "antiguo coste2: " << vecs[i].get_coste() << ", nuevo: " << cost_total2 << endl;
-                  vecs[i-1].set_visitados(v1);
-                  vecs[i-1].set_carga(demand1);
-                  vecs[i-1].set_coste(cost_total1);
-                  vecs[i].set_visitados(v2);
-                  vecs[i].set_carga(demand2);
-                  vecs[i].set_coste(cost_total2);
-                  inter->set_vector(vecs);
-                  if (inter->get_coste_total() < menor_cost_inter) {
-                      cout << "Total menor: " << menor_cost_inter << ", total nuevo: " << inter->get_coste_total() << endl;
-                      menor_cost_inter = inter->get_coste_total();
-                      gettimeofday(&endinterTime,NULL);
-                      encontrado = 1;
-                  }
-                  else
-                     inter->set_vector(bak);
-                  //cin.get();
-
+				  //for (unsigned int ii = 1; ii < v2.size(); ii++) {
+				  //   cost_total2 += matr.get_distancia(v2[ii-1], v2[ii]);
+				  ///   demand2 += matr.get_demandaij(v2[ii-1], v2[ii]);
+				  //}
+				  if (((cost_total1) <  (vecs[i].get_coste())) && demand1 <= vecs[i].getcarga_max()){
+					  cout << "mejor solucion" << endl;
+					  cout << "antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
+					  //cout << "antiguo coste2: " << vecs[i].get_coste() << ", nuevo: " << cost_total2 << endl;
+					  vecs[i].set_visitados(v1);
+					  vecs[i].set_carga(demand1);
+					  vecs[i].set_coste(cost_total1);
+					  //vecs[i].set_visitados(v2);
+					  //vecs[i].set_carga(demand2);
+					  //vecs[i].set_coste(cost_total2);
+					  inter->set_vector(vecs);
+					  if (inter->get_coste_total() < menor_cost_inter) {
+						  cout << "Total menor: " << menor_cost_inter << ", total nuevo: " << inter->get_coste_total() << endl;
+						  menor_cost_inter = inter->get_coste_total();
+						  gettimeofday(&endinterTime,NULL);
+						  encontrado = 1;
+					  }
+					  else
+						 inter->set_vector(bak);
+					  //cin.get();
+                }
              }
 
 		  }
