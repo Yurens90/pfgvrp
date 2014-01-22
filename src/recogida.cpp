@@ -536,6 +536,8 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    cout << "Menor: " << menor->get_ruta_total() << endl;
    //unsigned int i = 0;
    cout << "Intercambiando entre vehiculos..." << endl;
+   inter = new resolver(matr);
+   inter->ejecutar();
    (*inter) = (*menor);
    intercambiar(delimitador);
    out << "Iteracion_mejor_solucion_intercambiar" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
