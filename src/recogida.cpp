@@ -577,7 +577,7 @@ bool optimo :: intercambiar (char del) {
               vector<int> v1 = vecs[i].get_visitados();
               //vector<int> v2 = vecs[i].get_visitados();
               if (j != k) {
-				  cout << v1[j] << ", vs: " << v1[k] << endl;
+				  //cout << v1[j] << ", vs: " << v1[k] << endl;
 				  swap(v1[j], v1[k]);
 				  cost_total1 = 0.0;
 				  //cost_total2 = 0.0;

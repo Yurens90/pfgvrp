@@ -49,7 +49,7 @@ int main(int argc, char  *argv[]) {
 	else if (argc == 1) { //nombre_ejecutable  =>  Muestra la ayuda
 	   cout << "Argumentos insuficientes!" << endl;
 	   cout << "Modo de uso: " << endl;
-	   cout << argv[0] << " <entrada.txt> <salida.txt> numero_iteraciones numero_intercambios" << endl;
+	   cout << argv[0] << " <entrada.txt> <salida.txt> numero_iteraciones" << endl;
 	}
 	/*
 	else if (argc == 1) { //nombre_ejecutable  =>  Se ejecuta el programa con los valores por defecto
