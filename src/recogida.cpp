@@ -582,6 +582,22 @@ bool optimo :: intercambiar (char del) {
 		      counter++;
               vector<int> v1 = vecs[i-1].get_visitados();
               vector<int> v2 = vecs[i].get_visitados();
+              if ((v1.size() > 5) && (v2.size() > 5)) { //revisar el intercambio cruzado
+            	  if ((v1[j] != 0) && (v1[j+2] != 0) && (v2[k] != 0) && (v2[k+2] != 0)) {
+					  int aux = v1[j];
+					  v1[j] = v2[k+2];
+					  v2[k+2] = aux;
+
+					  aux = v1[j+1];
+					  v1[j+1] = v2[k+1];
+					  v2[k+1] = aux;
+
+					  aux = v2[k];
+					  v2[k] = v1[j+2];
+					  v1[j+2] = aux;
+            	  }
+
+              }
               //cout << v1[j] << ", vs: " << v2[k] << endl;
               //swap(v1[j], v2[k]);
               int ind = 0;
