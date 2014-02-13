@@ -579,14 +579,14 @@ bool optimo :: intercambiar (char del) {
 	   for (int j = 1; j < vecs[i].visitados_size()-4;j++) {
 		   for (int k = j+3; k < vecs[i].visitados_size()-4;k++) {
 			  cout << "j: " << j << ", k: " << k << endl;
-              vector<int> v1 = menor->get_vector()[i].get_visitados();
-              vector<int> v2 = menor->get_vector()[i].get_visitados();
+              vector<int> v1 = bak[i].get_visitados();
+              vector<int> v2 = bak[i].get_visitados();
               cout << "v1[" << j << "]: " << v1[j] << ", v1[" << j+1 << "]: " << v1[j+1] << ", v1[" << j+2 << "]: " << v1[j+2] << endl;
-              cout << "v2[" << k << "]: " << v2[k] << ", v2[" << k+1 << "]: " << v2[k+1] << ", v2[" << k+2 << "]: " << v2[k+2] << endl;
-              cin.get();
+              cout << "v1[" << k << "]: " << v1[k] << ", v1[" << k+1 << "]: " << v1[k+1] << ", v1[" << k+2 << "]: " << v1[k+2] << endl;
+              //cin.get();
               if ((v1.size() > 5) && (v2.size() > 5)) { //revisar el intercambio cruzado
             	  if ((v1[j] != v2[k]) && (v1[j+2] != v2[k+2]) && (v1[j+1] != v2[k+1])) {
-					  int aux = v1[j];
+/*					  int aux = v1[j];
 					  v1[j] = v2[k+2];
 					  v2[k+2] = aux;
 
@@ -597,6 +597,19 @@ bool optimo :: intercambiar (char del) {
 					  aux = v2[k];
 					  v2[k] = v1[j+2];
 					  v1[j+2] = aux;
+*/
+            		  int aux1, aux2, aux3;
+                      aux1 = v1[j];
+                      aux2 = v1[j+1];
+                      aux3 = v1[j+2];
+
+                      v1[j] = v2[k];
+                      v1[j+1] = v2[k+1];
+                      v1[j+2] = v2[k+2];
+
+                      v1[k] = aux1;
+                      v1[k+1] = aux2;
+                      v1[k+2] = aux3;
 
 					  cost_total1 = 0.0;
 					  demand1 = 0;
