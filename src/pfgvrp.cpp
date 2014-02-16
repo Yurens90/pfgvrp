@@ -9,6 +9,7 @@
 using namespace std;
 
 int main(int argc, char  *argv[]) {
+	//
 	srand (time(NULL));
 	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones, intercambios
 	   solomon sol(argv[1]);
