@@ -85,7 +85,9 @@ solomon :: solomon () {
    capacidadcamiones = 0;
 };
 
-solomon :: solomon (string nombre) {
+solomon :: solomon (string nombre){
+   ncamiones = 0;
+   capacidadcamiones = 0;
    ifstream file(nombre.c_str());
    string aux;
    for (int i = 0; i < 4; i++) //saltamos las 4 primeras palabras

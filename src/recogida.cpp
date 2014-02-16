@@ -556,7 +556,7 @@ void swap(int &x, int &y) {
 
 void imprimir_vector(vector<int> vec) {
    cout << "vector: " << endl;
-   for (int i = 0; i < vec.size(); i++) {
+   for (unsigned int i = 0; i < vec.size(); i++) {
       cout << vec[i] << ", ";
    }
    cout << endl;
@@ -571,33 +571,47 @@ bool optimo :: intercambiar (char del) {
    float menor_cost_inter = menor->get_coste_total(); // el menor coste total encontrado en los intercambios. lo inicializamos al valor del menor encontrado con el grasp
    float cost_total1 = 0.0;
    int demand1 = 0.0;
-   float cost_total2 = 0.0;
-   int demand2 = 0.0;
+   //float cost_total2 = 0.0;
+   //int demand2 = 0.0;
    gettimeofday(&ininterTime,NULL);
    unsigned int counter = 0;
    for (unsigned int i = 0; i < menor->get_vehiculosusados();i++) {
-	   for (int j = 1; j < vecs[i].visitados_size()-4;j++) {
-		   for (int k = j+3; k < vecs[i].visitados_size()-4;k++) {
-			  cout << "j: " << j << ", k: " << k << endl;
-              vector<int> v1 = menor->get_vector()[i].get_visitados();
-              vector<int> v2 = menor->get_vector()[i].get_visitados();
-              cout << "v1[" << j << "]: " << v1[j] << ", v1[" << j+1 << "]: " << v1[j+1] << ", v1[" << j+2 << "]: " << v1[j+2] << endl;
-              cout << "v2[" << k << "]: " << v2[k] << ", v2[" << k+1 << "]: " << v2[k+1] << ", v2[" << k+2 << "]: " << v2[k+2] << endl;
-              cin.get();
-              if ((v1.size() > 5) && (v2.size() > 5)) { //revisar el intercambio cruzado
-            	  if ((v1[j] != v2[k]) && (v1[j+2] != v2[k+2]) && (v1[j+1] != v2[k+1])) {
+	   for (int j = 1; j < vecs[i].visitados_size()-3;j++) {
+		   for (int k = j+3; k < vecs[i].visitados_size()-3;k++) {
+			  //cout << "j: " << j << ", k: " << k << endl;
+              vector<int> v1 = bak[i].get_visitados();
+              //vector<int> v2 = bak[i].get_visitados();
+              //cout << "v1[" << j << "]: " << v1[j] << ", v1[" << j+1 << "]: " << v1[j+1] << ", v1[" << j+2 << "]: " << v1[j+2] << endl;
+              //cout << "v1[" << k << "]: " << v1[k] << ", v1[" << k+1 << "]: " << v1[k+1] << ", v1[" << k+2 << "]: " << v1[k+2] << endl;
+              //cin.get();
+              counter++;
+              if ((v1.size() > 4)) { //revisar el intercambio cruzado
+            	  if ((v1[j] != 0) && (v1[j+2] != 0) && (v1[j+1] != 0)) {
 					  int aux = v1[j];
-					  v1[j] = v2[k+2];
-					  v2[k+2] = aux;
+					  v1[j] = v1[k+2];
+					  v1[k+2] = aux;
 
 					  aux = v1[j+1];
-					  v1[j+1] = v2[k+1];
-					  v2[k+1] = aux;
+					  v1[j+1] = v1[k+1];
+					  v1[k+1] = aux;
 
-					  aux = v2[k];
-					  v2[k] = v1[j+2];
+					  aux = v1[k];
+					  v1[k] = v1[j+2];
 					  v1[j+2] = aux;
 
+ /*           		  int aux1, aux2, aux3;
+                      aux1 = v1[j];
+                      aux2 = v1[j+1];
+                      aux3 = v1[j+2];
+
+                      v1[j] = v2[k];
+                      v1[j+1] = v2[k+1];
+                      v1[j+2] = v2[k+2];
+
+                      v1[k] = aux1;
+                      v1[k+1] = aux2;
+                      v1[k+2] = aux3;
+*/
 					  cost_total1 = 0.0;
 					  demand1 = 0;
 					  for (unsigned int ii = 1; ii < v1.size(); ii++) {
@@ -606,7 +620,7 @@ bool optimo :: intercambiar (char del) {
 					  }
 					  if (((cost_total1) <  vecs[i].get_coste()) && demand1 <= vecs[i].getcarga_max()){
 						  cout << "mejor solucion" << endl;
-						  cin.get();
+						  //cin.get();
 						  cout << "antiguo coste1: " << vecs[i].get_coste() << ", nuevo: " << cost_total1 << endl;
 						  vecs[i].set_visitados(v1);
 						  vecs[i].set_carga(demand1);
