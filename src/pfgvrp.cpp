@@ -25,7 +25,6 @@ int main(int argc, char  *argv[]) {
 	   matriz = sol.convertir();
 	   //int iteraciones = atoi(argv[3]);
 	   optimo opt(matriz);
-	   //cout << "iteraciones: " << iteraciones << endl;
 	   opt.repetir(10000,';',argv[2]);
 	}
 	else if (argc == 1) { //<entrada>
