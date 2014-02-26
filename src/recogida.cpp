@@ -623,9 +623,9 @@ bool optimo :: intercambiar (char del) {
       out << "Iteracion_de_intercambio" << del << "tiempo" << del << "ruta" << del << "coste" << del << "numero_vehiculos_usados" << endl;
       out << counter << del << timeval_diff(&endinterTime,&ininterTime) << del << inter->get_ruta_total() << del << inter->get_coste_total() << del << inter->get_vehiculosusados() << endl;
    }
-   else {
-      out << "No se encontro solucion intercambiando" << endl;
-   }
+   //else {
+   //   out << "No se encontro solucion intercambiando" << endl;
+   //}
    return encontrado;
 }
 
