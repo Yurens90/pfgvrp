@@ -586,10 +586,10 @@ bool optimo :: intercambiar (char del) {
 
                   //cin.get();
             	  if ((v1[j] != 0) && (v1[j+2] != 0) && (v2[k] != 0) && (v2[k+2] != 0)) {
-                      cout << "v1[j]: " << ", v1[j+1]: " << ", v1[j+2]: " << endl;
-                      cout << v1[j] << ","<< v1[j+1] << "," << v1[j+2] << endl;
-                      cout << "v2[k]: " << ", v2[k+1]: " << ", v2[k+2]: " << endl;
-                      cout << v2[k] << "," << v2[k+1] << ","<< v2[k+2] << endl;
+                      //cout << "v1[j]: " << ", v1[j+1]: " << ", v1[j+2]: " << endl;
+                      //cout << v1[j] << ","<< v1[j+1] << "," << v1[j+2] << endl;
+                      //cout << "v2[k]: " << ", v2[k+1]: " << ", v2[k+2]: " << endl;
+                      //cout << v2[k] << "," << v2[k+1] << ","<< v2[k+2] << endl;
 					  int aux = v1[j];
 					  v1[j] = v2[k+2];
 					  v2[k+2] = aux;
@@ -602,10 +602,10 @@ bool optimo :: intercambiar (char del) {
 					  v2[k] = v1[j+2];
 					  v1[j+2] = aux;
 
-	                  cout << "v1[j]: " << ", v1[j+1]: " << ", v1[j+2]: " << endl;
-	                  cout << v1[j] << ","<< v1[j+1] << "," << v1[j+2] << endl;
-	                  cout << "v2[k]: " << ", v2[k+1]: " << ", v2[k+2]: " << endl;
-	                  cout << v2[k] << "," << v2[k+1] << ","<< v2[k+2] << endl;
+	                  //cout << "v1[j]: " << ", v1[j+1]: " << ", v1[j+2]: " << endl;
+	                  //cout << v1[j] << ","<< v1[j+1] << "," << v1[j+2] << endl;
+	                  //cout << "v2[k]: " << ", v2[k+1]: " << ", v2[k+2]: " << endl;
+	                  //cout << v2[k] << "," << v2[k+1] << ","<< v2[k+2] << endl;
 	                  //cin.get();
             	  }
 
