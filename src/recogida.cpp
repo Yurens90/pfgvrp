@@ -540,7 +540,7 @@ void optimo :: repetir (int n, char delimitador, string salida, unsigned int m) 
    inter->ejecutar();
    (*inter) = (*menor);
    intercambiar(delimitador);
-   out << "Iteracion_mejor_solucion_intercambio" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
+   out << "Iteracion_mejor_solucion_sin_intercambio" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << mejorit << delimitador << mejortiempo << delimitador << mejor_ruta << delimitador << menor_coste << delimitador << nvehiculos << endl;
    out << "Numero_iteracion" << delimitador << "tiempo" << delimitador << "ruta" << delimitador << "coste" << delimitador << "numero_vehiculos_usados" << endl;
    out << ss.str();

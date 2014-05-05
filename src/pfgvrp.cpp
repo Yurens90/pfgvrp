@@ -5,13 +5,13 @@
 
 #include <iostream>
 #include "recogida.h"
-#include "solomon.h"
+#include "augerat.h"
 using namespace std;
 
 int main(int argc, char  *argv[]) {
 	srand (time(NULL));
 	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones, intercambios
-	   solomon sol(argv[1]);
+	   augerat sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
@@ -20,7 +20,7 @@ int main(int argc, char  *argv[]) {
    	   opt.repetir(iteraciones,';',argv[2], atoi(argv[4]));
 	}
 	else if (argc == 4) { //nombre_ejecutable, <entrada>, <salida>, iteraciones
-	   solomon sol(argv[1]);
+	   augerat sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
@@ -29,7 +29,7 @@ int main(int argc, char  *argv[]) {
    	   opt.repetir(iteraciones,';',argv[2], N_INTERCAMBIOS);
 	}
 	else if (argc == 3) { //nombre_ejecutable, <entrada> <salida>
-	   solomon sol(argv[1]);
+	   augerat sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
@@ -37,7 +37,7 @@ int main(int argc, char  *argv[]) {
 	   opt.repetir(N_ITERACIONES,';',argv[2],N_INTERCAMBIOS);
 	}
 	else if (argc == 2) {
-	   solomon sol(argv[1]);
+	   augerat sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
 	   matriz = sol.convertir();
@@ -52,7 +52,7 @@ int main(int argc, char  *argv[]) {
 	/*
 	else if (argc == 1) { //nombre_ejecutable  =>  Se ejecuta el programa con los valores por defecto
 		   cout << "0 argumentos" << endl;
-		   solomon sol(IN_FILE);
+		   augerat sol(IN_FILE);
 		   sol.calcularmatriz();
 		   mdistancia matriz;
 		   matriz = sol.convertir();
