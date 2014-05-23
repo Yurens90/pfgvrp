@@ -8,17 +8,17 @@
 #include <sys/time.h>
 #include <sstream>
 #include <time.h>
-
 using namespace std;
 
 #ifndef RECOGIDA_H_
 #define RECOGIDA_H_
 
+
 class precogida { //la idea es hacerla abstracta
    //String nombre;
    int id; //numero identificador
    float distancia; //distancia
-   bool visitado;//
+   bool visitado;
    int demanda;
 public:
    precogida ();
@@ -34,13 +34,20 @@ public:
    int getdemanda();
    void setdemanda(int dmd);
 };
+/*
+class visita {
+   int id; //identificador del punto
+   float coste; //coste que supone ir por dicho punto
+};
+*/
 
 class tvehiculo {
    int id; //identificador del vehiculo
    int ut; // unidades de carga total
    int ua; //unidades de carga actual
    float coste; //coste de la ruta
-   list <int> visitados;
+   //list <int> visitados;
+   vector <int> visitados;
    bool usado;
 public:
    tvehiculo();
@@ -53,13 +60,22 @@ public:
    int getcarga_max ();
    void sumar_carga (int cg);
    void sumar_coste (float cost);
+   void restar_carga (int cg);
+   void set_carga(int cg);
+   void set_coste(float cost);
    float get_coste ();
    string get_recorrido();
    bool enuso(); //sirve para detectar si un vehículo se ha utilizado o no
+   vector <int> get_visitados();
+   int get_visitado(int i);
+   void set_visitado(int i, int valor);
+   void set_visitados(vector <int> &vt);
+   int visitados_size(); //devuelve el numero de puntos visitados;
+
 };
 
 class mdistancia {
-   int N; //numero de putnos de recogida
+   int N; //numero de puntos de recogida
    vector <vector <precogida> > md;
    int nvehiculos; //numero de vehiculos que realizaran las rutas
    int ucarga; //unidades de carga maxima de dichos vehiculos
@@ -77,6 +93,8 @@ public:
    int getnvehiculos();
    int getcarga();
    void mostrar_demandas();
+   float get_distancia(int i, int j);
+   float get_demandaij(int i, int j);
 };
 
 class ruta {
@@ -102,7 +120,7 @@ public:
 class resolver {
 private:
    vector <tvehiculo> vehiculos; //contiene una lista con los vehiculos que van a realizar las recogidas
-   ruta * rt; //se encarga de buscar las rutas para los camiones
+   ruta * rt; //se encarga de buscar las rutas para cada vehiculo
    float coste_total;
    int cmed; //carga media de los contenedores
 public:
@@ -115,16 +133,23 @@ public:
    string get_ruta();
    string get_ruta_total();
    unsigned int get_vehiculosusados();
+   vector <tvehiculo> get_vector();
+   void set_vector(vector <tvehiculo> &vc);
+   float getdistanciaij (int i, int j);
+
 };
 
 class optimo {
 private:
    resolver * inicial;
    resolver * menor;
+   resolver * inter;
    mdistancia matr;
 public:
-  optimo (mdistancia &mat);
-  void repetir (int i,char delimitador, string salida);
+   ofstream out;
+   optimo (mdistancia &mat);
+   void repetir (int i,char delimitador, string salida, unsigned int m);
+   bool intercambiar(char del);
 };
 
 #endif
