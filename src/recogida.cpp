@@ -194,7 +194,24 @@ mdistancia :: mdistancia (string nombre) {
    nvehiculos = 0;
    N = 0;
    ifstream fich(nombre.c_str());
+   string lect;
+   fich >> lect;
    fich >> N;
+   fich >> lect;
+   fich >> lect;
+   fich >> nvehiculos;
+   fich >> ucarga;
+   fich >> lect;
+   vector <int> demandas;
+   cout << "N: " << N << endl;
+   for (int i = 0; i < N; i++) {
+      int d;
+      fich >> d;
+      cout << "D: " << d << endl;
+      demandas.push_back(d);
+   }
+   fich >> lect;
+   cout << "LECT: " << lect << endl;
    vector<precogida> aux;
    precogida dummy;
    for (int i = 0; i < N; i++)
@@ -208,7 +225,9 @@ mdistancia :: mdistancia (string nombre) {
         fich >> dist;
         md[i][j].setdistancia(dist);
         md[i][j].setid(j);
+        md[i][j].setdemanda(demandas[i]);
       };
+   fich.close();
 };
 
 mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga) {
