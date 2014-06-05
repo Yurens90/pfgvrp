@@ -2,7 +2,7 @@
 
 #define IN_FILE "datos.txt"
 #define OUT_FILE "salida.txt"
-#define N_ITERACIONES 1000000
+#define N_ITERACIONES 1000
 #define N_INTERCAMBIOS 1000000
 
 #include <iostream>
@@ -12,13 +12,6 @@ using namespace std;
 
 int main(int argc, char  *argv[]) {
 	srand (time(NULL));
-/*
-	mdistancia matriz(argv[1]);
-	matriz.imprimir();
-	optimo opt(matriz);
-	opt.repetir(N_ITERACIONES,';',argv[2],N_INTERCAMBIOS);
-	*/
-
 	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones, intercambios
 	   solomon sol(argv[1]);
 	   sol.calcularmatriz();
@@ -58,6 +51,17 @@ int main(int argc, char  *argv[]) {
 	   cout << "Modo de uso: " << endl;
 	   cout << argv[0] << " <entrada.txt> <salida.txt> numero_iteraciones" << endl;
 	}
+	/*
+	else if (argc == 1) { //nombre_ejecutable  =>  Se ejecuta el programa con los valores por defecto
+		   cout << "0 argumentos" << endl;
+		   solomon sol(IN_FILE);
+		   sol.calcularmatriz();
+		   mdistancia matriz;
+		   matriz = sol.convertir();
+		   optimo opt(matriz);
+		   opt.repetir(N_ITERACIONES,';',OUT_FILE,N_INTERCAMBIOS);
+	}
+	*/
 	else
        cout << "Argumentos insuficientes" << endl;
 

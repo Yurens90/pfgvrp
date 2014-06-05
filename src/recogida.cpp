@@ -194,24 +194,7 @@ mdistancia :: mdistancia (string nombre) {
    nvehiculos = 0;
    N = 0;
    ifstream fich(nombre.c_str());
-   string lect;
-   fich >> lect;
    fich >> N;
-   fich >> lect;
-   fich >> lect;
-   fich >> nvehiculos;
-   fich >> ucarga;
-   fich >> lect;
-   vector <int> demandas;
-   cout << "N: " << N << endl;
-   for (int i = 0; i < N; i++) {
-      int d;
-      fich >> d;
-      cout << "D: " << d << endl;
-      demandas.push_back(d);
-   }
-   fich >> lect;
-   cout << "LECT: " << lect << endl;
    vector<precogida> aux;
    precogida dummy;
    for (int i = 0; i < N; i++)
@@ -225,9 +208,7 @@ mdistancia :: mdistancia (string nombre) {
         fich >> dist;
         md[i][j].setdistancia(dist);
         md[i][j].setid(j);
-        md[i][j].setdemanda(demandas[i]);
       };
-   fich.close();
 };
 
 mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga) {
@@ -235,6 +216,13 @@ mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, in
    md = vec;
    nvehiculos = nvec;
    ucarga = carga;
+}
+mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga, vector<int> & demand) {
+   N = n;
+   md = vec;
+   nvehiculos = nvec;
+   ucarga = carga;
+   demandas = demand;
 }
 
 int mdistancia :: getsize() {
@@ -290,6 +278,13 @@ float mdistancia :: get_demandaij(int i, int j) {
    return md[i][j].getdemanda();
 };
 
+int mdistancia :: get_demanda(int i) {
+   return demandas[i];
+}
+void mdistancia :: insertar_demanda(int i) {
+   demandas.push_back(i);
+}
+
 ruta :: ruta (mdistancia &mat) {
    mraw = mat;
    mord = mat;    //nn
@@ -332,7 +327,7 @@ precogida ruta :: candidatos (int i) { // dado un punto buscamos los 3 mas cerca
       indice = rand()% candidatos.size(); // puede ser que en vez de 3 puntos tengamos dos o 1
    //cout << "indice original: " << i << "," << candidatos[indice].getid() << endl;
   // cout << "distancia: " << candidatos[indice].getdistancia() << endl;
-   //insertar_visitado(candidatos[indice].getid());
+   insertar_visitado(candidatos[indice].getid());
    return candidatos[indice];
 };
 
@@ -345,65 +340,39 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   precogida ret;
 	   //int demanda = 0;
 	  // cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
-	   int demanda = 0;
-	   float coste = 0;
-	   while (cont < mraw.getsize() && (demanda + mraw.get_demandaij(ret.getid(), siguiente)) < v.getcarga_max() && !fin_visitas()) {
+	   while (cont < mraw.getsize() && v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) < v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
+		  if (v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) > v.getcarga_max()) {
+             //cout << "SI" << endl;
+             //cin.get();
+			 v.sumar_coste(getdistanciaij(siguiente,0));
+             visitados.remove(ret.getid());
+
+             return true;
+		  }
+		  else {
+			  v.sumar_coste(ret.getdistancia());
+			  v.sumar_carga(mraw.get_demanda(ret.getid()));
+			  siguiente = ret.getid();
+			  v.insertar(siguiente);
+		  }
 		  //cout << "----------->siguiente: " << ret.getid() << endl;
 		  //demanda = ret.getdemanda();
 		  //cout << "Demanda: " << demanda << endl;
-		  //cin.get();
-
-
+		  //cout << "punto: actual: " << siguiente;
+		  //cout << "demanda: " << mraw.get_demanda(siguiente) << endl;
+		 // cin.get();
+		  cont++;
+		  //v.sumar_coste(ret.getdistancia());
 		  //cout << "ret: " << ret.getdistancia() << ", " << "getij: " << mraw.get_distancia(ret.getid(), siguiente) << " i: " << siguiente << ", j: " << ret.getid() << endl;
 		  //cin.get();
-		  //cout << "carga sig: " << v.getcarga_actual()+mraw.get_demandaij(ret.getid(), siguiente) << endl;
-		  if (demanda+mraw.get_demandaij(ret.getid(),siguiente) > v.getcarga_max()) {
-			 cout << "carga sig: " << demanda+mraw.get_demandaij(ret.getid(),siguiente) << endl;
-	         cout << "SE PASA" << endl;
-	         //cin.get();
-		  }
-		  //cin.get();
-		  if (!(demanda+mraw.get_demandaij(ret.getid(),siguiente) > v.getcarga_max())) {
-		     //if (cont != 0)
-			  //cout << "siguiente: " << siguiente << ", ret.gid: " << ret.getid() << endl;
-			  //cin.get();
-			  demanda+= mraw.get_demandaij(ret.getid(),siguiente);
-              coste+=getdistanciaij(ret.getid(), siguiente);
-			  insertar_visitado(siguiente);
-			  //v.sumar_coste(getdistanciaij(ret.getid(), siguiente));
-		     //v.sumar_carga(mraw.get_demandaij(ret.getid(), siguiente));
-             //v.insertar(ret.getid());
-			 v.insertar(siguiente);
-		     siguiente = ret.getid();
+		  //v.sumar_carga(mraw.get_demandaij(siguiente, ret.getid()));
 
-		  }
-		  else {
-			  cout << "MAL" << endl;
-			  cout << v.getcarga_actual()+mraw.get_demandaij(ret.getid(), siguiente) << endl;
-			  cin.get();
-			  break;
-		  }
 		  //v.sumar_carga(demanda);
-		  cont++;
 	   }
-	   if (v.getcarga_actual() > 200) {
-	      cout << "MALIS " << endl;
-		  cout << "carga sig: " << v.getcarga_actual()+mraw.get_demandaij(ret.getid(), siguiente) << endl;
-	      cin.get();
-	   }
-	   //cout << "vehiculo lleno" << endl
-	   v.set_carga(demanda);
-	   v.set_coste(coste);
+	   //cout << "vehiculo lleno" << endl;
 	   v.sumar_coste(getdistanciaij(ret.getid(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
-	   //cout << "getij: " << mraw.get_distancia(ret.getid(), 0) << ", vs: " << getdistanciaij(ret.getid(),0) << " i: 0, j: "  << ret.getid() <<  endl;+
-	   int cargo = 0;
-	   vector <int> hola = v.get_visitados();
-	   for (int k = 1; k < hola.size(); k++) {
-           cargo+= mraw.get_demandaij(hola[k-1],hola[k]);
-	   }
-	   if (cargo > 200)
-		   cout << "CARGA: " << cargo << endl;
+	   //cout << "getij: " << mraw.get_distancia(ret.getid(), 0) << ", vs: " << getdistanciaij(ret.getid(),0) << " i: 0, j: "  << ret.getid() <<  endl;
 	   //cout << "carga hasta el momento: " << v.get_coste() << endl;
 	   //cin.get();
 	   v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
