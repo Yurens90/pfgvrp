@@ -340,6 +340,8 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   precogida ret;
 	   //int demanda = 0;
 	  // cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
+	   int demanda = 0;
+	   float coste = 0;
 	   while (cont < mraw.getsize() && v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) < v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  if (v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) > v.getcarga_max()) {
@@ -351,8 +353,12 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
              return true;
 		  }
 		  else {
-			  v.sumar_coste(ret.getdistancia());
-			  v.sumar_carga(mraw.get_demanda(ret.getid()));
+			  coste+= mraw.get_distancia(siguiente,ret.getid());
+			  demanda+= mraw.get_demandaij(siguiente, ret.getid());
+			  //v.sumar_coste(ret.getdistancia());
+			  //v.sumar_carga(mraw.get_demanda(ret.getid()));
+			  v.set_coste(coste);
+			  v.set_carga(demanda);
 			  siguiente = ret.getid();
 			  v.insertar(siguiente);
 		  }
