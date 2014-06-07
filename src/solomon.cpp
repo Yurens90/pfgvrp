@@ -169,6 +169,9 @@ float solomon :: deuclidea(int x1, int x2, int y1, int y2) {
 
 mdistancia solomon :: convertir () {
    vector<precogida> aux;
+   vector<int> dem;
+   for (int i = 0; i < listado.size();i++)
+	   dem.push_back(listado[i].getdemanda());
    vector <vector <precogida> > aux2;
    precogida dummy;
    for (int i = 0; i < nclientes; i++)
@@ -181,6 +184,7 @@ mdistancia solomon :: convertir () {
 		aux2[i][j].setdistancia(matriz[i][j]);
 		aux2[i][j].setid(j);
 		aux2[i][j].setdemanda(listado[j].getdemanda());
+		//dem(listado[j].getdemanda());
 		//cout << "getdemanda: " << listado[j].getdemanda() << endl;
 		//cin.get();
 		//aux2[i][j].setdemanda(matri);
@@ -201,7 +205,7 @@ mdistancia solomon :: convertir () {
    //ret.imprimir();
    //cin.get();
     */
-   mdistancia ret(nclientes,aux2,ncamiones,capacidadcamiones);
+   mdistancia ret(nclientes,aux2,ncamiones,capacidadcamiones,dem);
    return ret;
 }
 
