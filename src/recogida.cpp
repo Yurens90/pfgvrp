@@ -167,6 +167,7 @@ void tvehiculo :: set_visitado(int i, int valor) {
    visitados[i] = valor;
 };
 
+
 mdistancia :: mdistancia () {
    N = 0;
    ucarga = 0;
@@ -216,6 +217,13 @@ mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, in
    md = vec;
    nvehiculos = nvec;
    ucarga = carga;
+}
+mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga, vector<int> & demand) {
+   N = n;
+   md = vec;
+   nvehiculos = nvec;
+   ucarga = carga;
+   demandas = demand;
 }
 
 int mdistancia :: getsize() {
@@ -270,6 +278,13 @@ float mdistancia :: get_distancia(int i, int j) {
 float mdistancia :: get_demandaij(int i, int j) {
    return md[i][j].getdemanda();
 };
+
+int mdistancia :: get_demanda(int i) {
+   return demandas[i];
+}
+void mdistancia :: insertar_demanda(int i) {
+   demandas.push_back(i);
+}
 
 ruta :: ruta (mdistancia &mat) {
    mraw = mat;
@@ -326,19 +341,34 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   precogida ret;
 	   //int demanda = 0;
 	  // cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
-	   while (cont < mraw.getsize() && v.getcarga_actual()+ mraw.get_demandaij(ret.getid(), siguiente) <= v.getcarga_max() && !fin_visitas()) {
+	   while (cont < mraw.getsize() && v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) < v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
+		  if (v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) > v.getcarga_max()) {
+             //cout << "SI" << endl;
+             //cin.get();
+			 v.sumar_coste(getdistanciaij(siguiente,0));
+             visitados.remove(ret.getid());
+
+             return true;
+		  }
+		  else {
+			  v.sumar_coste(ret.getdistancia());
+			  v.sumar_carga(mraw.get_demanda(ret.getid()));
+			  siguiente = ret.getid();
+			  v.insertar(siguiente);
+		  }
 		  //cout << "----------->siguiente: " << ret.getid() << endl;
 		  //demanda = ret.getdemanda();
 		  //cout << "Demanda: " << demanda << endl;
-		  //cin.get();
+		  //cout << "punto: actual: " << siguiente;
+		  //cout << "demanda: " << mraw.get_demanda(siguiente) << endl;
+		 // cin.get();
 		  cont++;
-		  v.sumar_coste(ret.getdistancia());
+		  //v.sumar_coste(ret.getdistancia());
 		  //cout << "ret: " << ret.getdistancia() << ", " << "getij: " << mraw.get_distancia(ret.getid(), siguiente) << " i: " << siguiente << ", j: " << ret.getid() << endl;
 		  //cin.get();
-		  v.sumar_carga(mraw.get_demandaij(ret.getid(), siguiente));
-		  siguiente = ret.getid();
-		  v.insertar(siguiente);
+		  //v.sumar_carga(mraw.get_demandaij(siguiente, ret.getid()));
+
 		  //v.sumar_carga(demanda);
 	   }
 	   //cout << "vehiculo lleno" << endl;
@@ -358,6 +388,7 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
    //cout << "Ya todos los puntos estan visitados" << endl;
    return false;
 };
+
 
 void ruta :: insertar_visitado (int i) {
    visitados.push_back(i);

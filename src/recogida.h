@@ -79,12 +79,14 @@ class mdistancia {
    vector <vector <precogida> > md;
    int nvehiculos; //numero de vehiculos que realizaran las rutas
    int ucarga; //unidades de carga maxima de dichos vehiculos
+   vector <int> demandas; //listado de demandas
 public:
    mdistancia ();
    ~mdistancia();
    mdistancia (int n);
    mdistancia (string nombre);
    mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga);
+   mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga, vector<int> & demand);
    int getsize ();
    precogida get (int i, int j);
    void ordenar_matriz ();
@@ -95,7 +97,10 @@ public:
    void mostrar_demandas();
    float get_distancia(int i, int j);
    float get_demandaij(int i, int j);
+   int get_demanda(int i);
+   void insertar_demanda(int i);
 };
+
 
 class ruta {
 private:
