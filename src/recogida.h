@@ -7,7 +7,6 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sstream>
-#include <time.h>
 using namespace std;
 
 #ifndef RECOGIDA_H_
@@ -15,7 +14,6 @@ using namespace std;
 
 
 class precogida { //la idea es hacerla abstracta
-   //String nombre;
    int id; //numero identificador
    float distancia; //distancia
    bool visitado;
@@ -34,12 +32,6 @@ public:
    int getdemanda();
    void setdemanda(int dmd);
 };
-/*
-class visita {
-   int id; //identificador del punto
-   float coste; //coste que supone ir por dicho punto
-};
-*/
 
 class tvehiculo {
    int id; //identificador del vehiculo

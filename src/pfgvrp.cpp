@@ -2,7 +2,7 @@
 
 #define IN_FILE "datos.txt"
 #define OUT_FILE "salida.txt"
-#define N_ITERACIONES 1000000
+#define N_ITERACIONES 1000
 #define N_INTERCAMBIOS 1000000
 
 #include <iostream>
@@ -12,13 +12,7 @@ using namespace std;
 
 int main(int argc, char  *argv[]) {
 	srand (time(NULL));
-	mdistancia matriz(argv[1]);
-	matriz.imprimir();
-    int iteraciones = atoi(argv[3]);
-	optimo opt(matriz);
-	opt.repetir(iteraciones,';',argv[2],N_INTERCAMBIOS);
-/*
-	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones, intercambios
+	if (argc == 5) { //nombre_ejecutable, <entrada>, <salida>, iteraciones,
 	   solomon sol(argv[1]);
 	   sol.calcularmatriz();
 	   mdistancia matriz;
@@ -57,7 +51,8 @@ int main(int argc, char  *argv[]) {
 	   cout << "Modo de uso: " << endl;
 	   cout << argv[0] << " <entrada.txt> <salida.txt> numero_iteraciones" << endl;
 	}
+
 	else
        cout << "Argumentos insuficientes" << endl;
-*/
+
 }
