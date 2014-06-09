@@ -194,7 +194,24 @@ mdistancia :: mdistancia (string nombre) {
    nvehiculos = 0;
    N = 0;
    ifstream fich(nombre.c_str());
+   string lect;
+   fich >> lect;
    fich >> N;
+   fich >> lect;
+   fich >> lect;
+   fich >> nvehiculos;
+   fich >> ucarga;
+   fich >> lect;
+   //vector <int> demandas;
+   cout << "N: " << N << endl;
+   for (int i = 0; i < N; i++) {
+      int d;
+      fich >> d;
+      cout << "D: " << d << endl;
+      demandas.push_back(d);
+   }
+   fich >> lect;
+   cout << "LECT: " << lect << endl;
    vector<precogida> aux;
    precogida dummy;
    for (int i = 0; i < N; i++)
@@ -208,7 +225,9 @@ mdistancia :: mdistancia (string nombre) {
         fich >> dist;
         md[i][j].setdistancia(dist);
         md[i][j].setid(j);
+        md[i][j].setdemanda(demandas[i]);
       };
+   fich.close();
 };
 
 mdistancia :: mdistancia (int n, vector <vector <precogida> > &vec, int nvec, int carga) {
@@ -285,6 +304,7 @@ void mdistancia :: insertar_demanda(int i) {
    demandas.push_back(i);
 }
 
+
 ruta :: ruta (mdistancia &mat) {
    mraw = mat;
    mord = mat;    //nn
@@ -340,8 +360,6 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
 	   precogida ret;
 	   //int demanda = 0;
 	  // cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
-	   int demanda = 0;
-	   float coste = 0;
 	   while (cont < mraw.getsize() && v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) < v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  if (v.getcarga_actual()+ (mraw.get_demanda(ret.getid())) > v.getcarga_max()) {
@@ -353,12 +371,8 @@ bool ruta :: buscar (tvehiculo &v, int media) { //ruta parcial
              return true;
 		  }
 		  else {
-			  coste+= mraw.get_distancia(siguiente,ret.getid());
-			  demanda+= mraw.get_demandaij(siguiente, ret.getid());
-			  //v.sumar_coste(ret.getdistancia());
-			  //v.sumar_carga(mraw.get_demanda(ret.getid()));
-			  v.set_coste(coste);
-			  v.set_carga(demanda);
+			  v.sumar_coste(ret.getdistancia());
+			  v.sumar_carga(mraw.get_demanda(ret.getid()));
 			  siguiente = ret.getid();
 			  v.insertar(siguiente);
 		  }
